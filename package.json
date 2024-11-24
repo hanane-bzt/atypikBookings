@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-cookie-consent": "^9.0.0",
+    "react-helmet": "^6.1.0",
+    "sitemap-generator": "^7.5.2"
+  }
+}
