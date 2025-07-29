@@ -1,6 +1,7 @@
+// client/src/pages/PlacePage.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Helmet } from 'react-helmet'; // Import pour le SEO
+import { Helmet } from 'react-helmet';
 
 import axiosInstance from '@/utils/axios';
 import Spinner from '@/components/ui/Spinner';
@@ -9,119 +10,95 @@ import BookingWidget from '@/components/ui/BookingWidget';
 import PlaceGallery from '@/components/ui/PlaceGallery';
 import PerksWidget from '@/components/ui/PerksWidget';
 
-const PlacePage = () => {
+const isBrowser = typeof window !== 'undefined';       // <── détecte SSR / browser
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+
+export default function PlacePage() {
   const { id } = useParams();
-  const [place, setPlace] = useState(null);
+
+  /* ---------------- état ---------------- */
+  const [place,   setPlace]   = useState(null);
   const [loading, setLoading] = useState(false);
-  const [rating, setRating] = useState(0);
+  const [rating,  setRating]  = useState(0);
   const [comment, setComment] = useState('');
-  const [reply, setReply] = useState({});
+  const [reply,   setReply]   = useState({});
   const [replyVisible, setReplyVisible] = useState({});
 
-  const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+  /* ----------- infos utilisateur -------- */
+  const storedUser = isBrowser
+    ? JSON.parse(window.localStorage.getItem('user') || 'null')
+    : null;
+  const userName = storedUser?.name || 'Utilisateur inconnu';
+  const hasToken = isBrowser && window.localStorage.getItem('token');
 
-  // Récupérer le nom de l'utilisateur depuis le localStorage
-  const storedUser = JSON.parse(localStorage.getItem('user'));
-  const userName = storedUser ? storedUser.name : 'Utilisateur inconnu';
-
+  /* ------------- chargement place -------------- */
   useEffect(() => {
-    if (!id) {
-      return '';
-    }
-
+    if (!id) return;
     setLoading(true);
 
-    const getPlace = async () => {
+    (async () => {
       try {
-        const { data } = await axiosInstance.get(
-          `${API_BASE_URL}/api/places/${id}`
-        );
+        const { data } = await axiosInstance.get(`${API_BASE_URL}/api/places/${id}`);
         setPlace(data.place);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.error(err);
+      } finally {
         setLoading(false);
       }
-    };
+    })();
+  }, [id]);
 
-    getPlace();
-  }, [id, API_BASE_URL]);
-
+  /* -------------- avis & réponses -------------- */
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
+    if (!hasToken) return;
 
     try {
       const { data } = await axiosInstance.post(
         `${API_BASE_URL}/api/places/${id}/reviews`,
-        {
-          rating,
-          comment,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { rating, comment },
+        { headers: { Authorization: `Bearer ${hasToken}` } }
       );
-      setPlace((prevPlace) => ({
-        ...prevPlace,
-        reviews: [...prevPlace.reviews, data.data[data.data.length - 1]],
+
+      setPlace((prev) => ({
+        ...prev,
+        reviews: [...prev.reviews, data.data.at(-1)],
       }));
       setRating(0);
       setComment('');
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   const handleReplySubmit = async (reviewId) => {
-    const token = localStorage.getItem('token');
+    if (!hasToken) return;
 
     try {
       const { data } = await axiosInstance.post(
         `${API_BASE_URL}/api/places/${id}/reviews/${reviewId}/reply`,
-        {
-          comment: reply[reviewId],
-          userName,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { comment: reply[reviewId], userName },
+        { headers: { Authorization: `Bearer ${hasToken}` } }
       );
-      setPlace((prevPlace) => ({
-        ...prevPlace,
-        reviews: prevPlace.reviews.map((review) =>
-          review._id === reviewId ? data.data : review
-        ),
+
+      setPlace((prev) => ({
+        ...prev,
+        reviews: prev.reviews.map((r) => (r._id === reviewId ? data.data : r)),
       }));
-      setReply({ ...reply, [reviewId]: '' });
-      setReplyVisible({ ...replyVisible, [reviewId]: false });
-    } catch (error) {
-      console.error(error);
+      setReply((p) => ({ ...p, [reviewId]: '' }));
+      setReplyVisible((p) => ({ ...p, [reviewId]: false }));
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const toggleReplyForm = (reviewId) => {
-    setReplyVisible((prev) => ({
-      ...prev,
-      [reviewId]: !prev[reviewId],
-    }));
-  };
-
-  if (loading) {
-    return <Spinner />;
-  }
-
-  if (!place) {
-    return null;
-  }
+  /* -------------- rendering -------------- */
+  if (loading) return <Spinner />;
+  if (!place)  return null;
 
   return (
     <>
-      {/* SEO - Balises meta */}
+      {/* SEO */}
       <Helmet>
         <title>{place.title} - AtypikHouse</title>
         <meta
@@ -133,7 +110,7 @@ const PlacePage = () => {
           property="og:description"
           content={`Réservez ${place.title} sur AtypikHouse. Parfait pour ${place.maxGuests} invités.`}
         />
-        <meta property="og:url" content={`https://votre-domaine.com/places/${id}`} />
+        <meta property="og:url"  content={`https://votre-domaine.com/places/${id}`} />
         <meta property="og:type" content="website" />
       </Helmet>
 
@@ -144,78 +121,79 @@ const PlacePage = () => {
         <PlaceGallery place={place} />
 
         <div className="mb-8 mt-8 grid grid-cols-1 gap-8 md:grid-cols-[2fr_1fr]">
-          <div className="">
-            <div className="my-4">
-              <h2 className="text-2xl font-semibold">Description</h2>
-              <p>{place.description}</p>
-            </div>
-            <p>Capacité maximale : {place.maxGuests} personnes</p>
-            <PerksWidget perks={place?.perks} />
-          </div>
+          {/* description */}
           <div>
-            <BookingWidget place={place} />
+            <h2 className="my-4 text-2xl font-semibold">Description</h2>
+            <p>{place.description}</p>
+            <p className="mt-2">Capacité max : {place.maxGuests} personnes</p>
+            <PerksWidget perks={place.perks} />
           </div>
-        </div>
-        <div className="-mx-8 border-t bg-white px-8 py-8">
-          <div>
-            <h2 className="mt-4 text-2xl font-semibold">Informations supplémentaires</h2>
-          </div>
-          <div className="mb-4 mt-2 text-sm leading-5 text-gray-700">
-            {place.extraInfo}
-          </div>
+
+          {/* réservation */}
+          <BookingWidget place={place} />
         </div>
 
-        {/* Section Avis */}
-        <div className="mt-8">
+        {/* extraInfo */}
+        <section className="-mx-8 border-t bg-white px-8 py-8">
+          <h2 className="mt-4 text-2xl font-semibold">Informations supplémentaires</h2>
+          <p className="mb-4 mt-2 text-sm leading-5 text-gray-700">{place.extraInfo}</p>
+        </section>
+
+        {/* avis */}
+        <section className="mt-8">
           <h2 className="text-2xl font-semibold">Avis</h2>
+
+          {/* liste avis + réponses */}
           <div className="mt-4">
-            {place.reviews?.length > 0 ? (
+            {place.reviews?.length ? (
               place.reviews.map((review) => (
-                <div key={review._id} className="mb-4 p-4 border rounded">
+                <div key={review._id} className="mb-4 rounded border p-4">
                   <div className="flex items-center">
                     <span className="font-semibold">
                       {review.user?.name || userName}
                     </span>
                     <span className="ml-4">Note : {review.rating} / 5</span>
                   </div>
+
                   <p>{review.comment}</p>
 
-                  {/* Réponses */}
-                  {review.replies?.map((reply) => (
-                    <div key={reply._id} className="mt-4 ml-4 border-l-2 pl-4">
-                      <span className="font-semibold">{reply.user?.name}</span>: {reply.comment}
+                  {review.replies?.map((rep) => (
+                    <div key={rep._id} className="mt-4 ml-4 border-l-2 pl-4">
+                      <span className="font-semibold">{rep.user?.name}</span> : {rep.comment}
                     </div>
                   ))}
 
-                  {/* Formulaire de réponse */}
-                  {localStorage.getItem('token') && (
+                  {hasToken && (
                     <>
                       <button
-                        onClick={() => toggleReplyForm(review._id)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-700"
+                        className="mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
+                        onClick={() =>
+                          setReplyVisible((p) => ({ ...p, [review._id]: !p[review._id] }))
+                        }
                       >
                         Répondre
                       </button>
+
                       {replyVisible[review._id] && (
                         <form
+                          className="mt-4"
                           onSubmit={(e) => {
                             e.preventDefault();
                             handleReplySubmit(review._id);
                           }}
-                          className="mt-4"
                         >
                           <textarea
+                            rows={2}
+                            className="w-full rounded border p-2"
+                            placeholder="Répondre à cet avis"
                             value={reply[review._id] || ''}
                             onChange={(e) =>
-                              setReply({ ...reply, [review._id]: e.target.value })
-                            }
-                            placeholder="Répondre à cet avis"
-                            className="w-full p-2 border rounded"
-                            rows="2"
+                              setReply((p) => ({ ...p, [review._id]: e.target.value }))
+                          }
                           />
                           <button
                             type="submit"
-                            className="bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-700"
+                            className="mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
                           >
                             Envoyer
                           </button>
@@ -226,62 +204,52 @@ const PlacePage = () => {
                 </div>
               ))
             ) : (
-              <p>Aucun avis pour l'instant.</p>
+              <p>Aucun avis pour l’instant.</p>
             )}
           </div>
-        </div>
 
-        {/* Formulaire pour laisser un avis */}
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold">Laisser un avis</h2>
-          {localStorage.getItem('token') ? (
+          {/* formulaire nouveau commentaire */}
+          <h2 className="mt-8 text-2xl font-semibold">Laisser un avis</h2>
+          {hasToken ? (
             <form onSubmit={handleReviewSubmit}>
-              <div className="mb-4">
-                <label htmlFor="rating" className="block font-semibold">
-                  Note
-                </label>
+              <label className="block font-semibold">
+                Note
                 <select
-                  id="rating"
+                  required
                   value={rating}
                   onChange={(e) => setRating(e.target.value)}
-                  className="mt-1 block w-full p-2 border rounded"
-                  required
+                  className="mt-1 block w-full rounded border p-2"
                 >
                   <option value="">Sélectionnez une note</option>
-                  <option value="1">1 étoile</option>
-                  <option value="2">2 étoiles</option>
-                  <option value="3">3 étoiles</option>
-                  <option value="4">4 étoiles</option>
-                  <option value="5">5 étoiles</option>
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <option key={n} value={n}>{n} étoile{n > 1 && 's'}</option>
+                  ))}
                 </select>
-              </div>
-              <div className="mb-4">
-                <label htmlFor="comment" className="block font-semibold">
-                  Commentaire
-                </label>
+              </label>
+
+              <label className="mt-4 block font-semibold">
+                Commentaire
                 <textarea
-                  id="comment"
+                  required
+                  rows={4}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  className="mt-1 block w-full p-2 border rounded"
-                  rows="4"
-                  required
-                ></textarea>
-              </div>
+                  className="mt-1 block w-full rounded border p-2"
+                />
+              </label>
+
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="mt-4 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700"
               >
                 Envoyer
               </button>
             </form>
           ) : (
-            <p>Veuillez vous connecter pour laisser un avis.</p>
+            <p className="italic">Veuillez vous connecter pour laisser un avis.</p>
           )}
-        </div>
+        </section>
       </div>
     </>
   );
-};
-
-export default PlacePage;
+}

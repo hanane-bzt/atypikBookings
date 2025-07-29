@@ -6,6 +6,11 @@ module.exports = {
     './components/ui/**/*.{js,jsx}',
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
+    './client/src/**/*.{html,js,jsx}',
+    './client/public/index.html',
+    './api/src/**/*.js',
+    './index.html',
+
   ],
   theme: {
     container: {
@@ -22,6 +27,7 @@ module.exports = {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        border: 'hsl(var(--border))',
         primary: {
           DEFAULT: '#F5385d',
           foreground: 'hsl(var(--primary-foreground))',
@@ -55,6 +61,7 @@ module.exports = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+        DEFAULT: 'var(--radius)',
       },
       keyframes: {
         'accordion-down': {
@@ -72,5 +79,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  // plugins: [require('tailwindcss-animate'), require('daisyui')],
+  // daisyui: {
+  //   themes: ['light', 'dark', 'cupcake'],
+  // },
 };

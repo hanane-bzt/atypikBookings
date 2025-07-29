@@ -1,17 +1,18 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client'; // ⬅️ hydrateRoot au lieu de createRoot
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './styles/index.css';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'; // Importation du service worker
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+hydrateRoot( // ⬅️ hydrateRoot ici
+  document.getElementById('root'),
   <React.StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
-// Enregistrer le service worker pour activer le mode hors-ligne et d'autres fonctionnalités PWA
+// Enregistrer le service worker
 serviceWorkerRegistration.register();

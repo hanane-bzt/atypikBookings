@@ -31,4 +31,10 @@ router.post('/:placeId/reviews/:reviewId/reply', isLoggedIn, replyToReview);
 router.route('/:id').get(singlePlace);
 router.route('/search/:key').get(searchPlaces);
 
+router.get('/', async (req, res) => {
+  const places = await Place.find();
+  console.log('✅ Places retournées:', places);
+  res.json({ places });
+});
+
 module.exports = router;
