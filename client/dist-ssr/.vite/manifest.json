@@ -1,0 +1,14 @@
+{
+  "src/entry-server.jsx": {
+    "file": "assets/entry-server-Bv7Wjr1C.js",
+    "name": "entry-server",
+    "src": "src/entry-server.jsx",
+    "isEntry": true,
+    "css": [
+      "assets/entry-server-B4zyQOk2.css"
+    ],
+    "assets": [
+      "assets/Logo_AtypikHouse-DIBUtg9f.png"
+    ]
+  }
+}

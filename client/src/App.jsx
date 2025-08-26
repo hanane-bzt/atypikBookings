@@ -154,7 +154,6 @@
 
 // export default App;
 
-
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Slide, ToastContainer } from 'react-toastify';
@@ -186,10 +185,10 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { getItemFromLocalStorage } from './utils';
 import ProtectedAdminRoute from './components/ui/ProtectedAdminRoute';
 
-function App({ initialData = {} }) {
+function App({ initialPlaces = [], initialUser = null, initialBookings = [], initialPerks = [] }) {
   const location = useLocation();
-  const initialPlaces = initialData.places || [];
 
+  // 🔄 Si SSR n’a pas injecté les données, on tente de récupérer côté client
   useEffect(() => {
     if (typeof window !== 'undefined') {
       axiosInstance.defaults.headers.common['Authorization'] =
@@ -199,7 +198,7 @@ function App({ initialData = {} }) {
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <UserProvider>
+      <UserProvider initialUser={initialUser}>
         <PlaceProvider initialPlaces={initialPlaces}>
           <Routes location={location}>
             <Route path="/" element={<Layout />}>

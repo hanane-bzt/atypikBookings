@@ -96,16 +96,19 @@ exports.updatePlace = async (req, res) => {
 // Returns all the places in DB
 exports.getPlaces = async (req, res) => {
   try {
-    const places = await Place.find();
-    res.status(200).json({
-      places,
-    });
+    console.log("👉 Requête vers /api/places");
+    const places = await Place.find().populate('owner', 'name email');
+    console.log("✅ Places récupérées :", places.length);
+    res.status(200).json({ places });
   } catch (err) {
+    console.error("❌ Erreur dans getPlaces():", err.message);
     res.status(500).json({
       message: 'Internal server error',
+      error: err.message,
     });
   }
 };
+
 
 // Returns single place, based on passed place id
 exports.singlePlace = async (req, res) => {

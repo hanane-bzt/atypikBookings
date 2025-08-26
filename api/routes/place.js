@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { isLoggedIn } = require('../middlewares/user');
-
 const {
   addPlace,
   getPlaces,
@@ -14,27 +13,21 @@ const {
   replyToReview,
 } = require('../controllers/placeController');
 
-// Public route to get all places
+// Public route
 router.route('/').get(getPlaces);
 
-// Protected routes for managing places
+// Protected
 router.route('/add-places').post(isLoggedIn, addPlace);
 router.route('/user-places').get(isLoggedIn, userPlaces);
 router.route('/update-place').put(isLoggedIn, updatePlace);
 
-// Routes pour la gestion des avis
+// Reviews
 router.post('/:placeId/reviews', isLoggedIn, addReview);
 router.get('/:placeId/reviews', getReviewsByPlace);
 router.post('/:placeId/reviews/:reviewId/reply', isLoggedIn, replyToReview);
 
-// Public routes for accessing a single place and searching
+// Public
 router.route('/:id').get(singlePlace);
 router.route('/search/:key').get(searchPlaces);
-
-router.get('/', async (req, res) => {
-  const places = await Place.find();
-  console.log('✅ Places retournées:', places);
-  res.json({ places });
-});
 
 module.exports = router;

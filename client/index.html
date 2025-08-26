@@ -1,32 +1,22 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link
-      rel="icon"
-      type="image/png"
-      href="./src/assets/images/Logo_AtypikHouse.png"
-    />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AtypikHouse</title>
-    <!-- Google tag (gtag.js) -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-NPFYM6CM6W"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-NPFYM6CM6W');
-    </script>
-  </head>
-  <body>
-    <div id="root"><!--ssr-outlet--></div>
-    <!--initial-data-->
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/Logo_AtypikHouse.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="AtypikHouse, location de logements insolites en France et en Europe. Trouvez la cabane, la bulle ou la yourte de vos rêves pour une expérience unique." />
+  <title>AtypikHouse</title>
+  <!--helmet-meta-->
+  <!--preload-links-->
+</head>
+
+<body>
+  <div id="root"><!--ssr-outlet--></div>
+  <!--prod-scripts-->
+  <script type="module" src="/src/main.jsx"></script>
+  <!--initial-data-->
+</body>
+
 </html>

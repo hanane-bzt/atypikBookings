@@ -6,11 +6,7 @@ const multer = require('multer');
 // multer
 const  upload = multer({ dest: '/tmp' });
 
-router.get('/', (req, res) => {
-  res.status(200).json({
-    greeting: 'Hello from atypikhouse',
-  });
-});
+
 
 // upload photo using image url
 router.post('/upload-by-link', async (req, res) => {
