@@ -1,168 +1,105 @@
 import { usePlaces } from '../../hooks';
 import Spinner from '@/components/ui/Spinner';
 import PlaceCard from '@/components/ui/PlaceCard';
-import { Helmet } from 'react-helmet'; // Import pour le SEO
+import { Helmet } from 'react-helmet';
+import { Link as ScrollLink, Element } from 'react-scroll';
+import { Link } from 'react-router-dom';
 
 const IndexPage = () => {
-  const allPlaces = usePlaces();
+  const { places = [], loading = false } = usePlaces() || {};
 
-  // ✅ Sécurisation de l'accès aux données
-  const { places = [], loading = false } = allPlaces || {};
+  if (loading) return <Spinner />;
 
-  if (loading) {
-    return <Spinner />;
-  }
-  console.log("places", places);
+  const visiblePlaces = places.slice(0, 6); // Afficher 6 max
 
   return (
     <>
-      {/* Ajout des balises meta pour le SEO */}
+      {/* SEO */}
       <Helmet>
         <title>AtypikHouse - Découvrez des habitats uniques</title>
-        <meta
-          name="description"
-          content="Découvrez des lieux uniques comme des cabanes dans les arbres, yourtes, et autres hébergements atypiques disponibles à la location."
-        />
-        <meta
-          name="keywords"
-          content="locations, habitats atypiques, cabanes, yourtes, voyage, hébergements"
-        />
+        <meta name="description" content="Découvrez des lieux uniques comme des cabanes dans les arbres, yourtes, et autres hébergements atypiques disponibles à la location." />
+        <meta name="keywords" content="locations, habitats atypiques, cabanes, yourtes, voyage, hébergements" />
         <meta name="robots" content="index, follow" />
         <meta property="og:title" content="AtypikHouse - Habitats uniques" />
-        <meta
-          property="og:description"
-          content="Réservez des habitats atypiques uniques : cabanes, yourtes, et bien plus encore !"
-        />
+        <meta property="og:description" content="Réservez des habitats atypiques uniques : cabanes, yourtes, et bien plus encore !" />
         <meta property="og:url" content="https://votre-domaine.com" />
         <meta property="og:type" content="website" />
       </Helmet>
 
-      {/* Contenu principal */}
-      <div className="grid grid-cols-1 justify-items-center px-4 py-32 md:grid-cols-2 md:gap-0 lg:grid-cols-3 lg:gap-2 xl:grid-cols-4 xl:gap-10">
-        {places.length > 0 ? (
-          places.map((place) => (
-            <PlaceCard place={place} key={place._id} />
-          ))
-        ) : (
-          <div
-            className="absolute left-1/2 right-1/2 top-40 flex w-full -translate-x-1/2 transform flex-col p-10 md:w-1/2"
-            role="alert"
-            aria-label="No results found"
-          >
-            <h1 className="text-3xl font-semibold">Aucun résultat trouvé !</h1>
-            <p className="text-lg font-semibold">
-              Désolé, nous n'avons pas trouvé le lieu que vous recherchez.
-            </p>
-            <button className="mt-4 w-32 rounded-full bg-primary p-2 text-white">
-              <a href="/" className="flex items-center justify-center gap-1">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-5 w-5"
-                >
-                  <line x1="19" y1="12" x2="5" y2="12"></line>
-                  <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-                Retour
-              </a>
-            </button>
+      {/* HERO */}
+      <section id="hero" className="h-screen flex items-center justify-center bg-gray-100 shadow-inner rounded-xl px-4">
+        <div className="text-center max-w-3xl">
+          <h1 className="text-5xl font-extrabold text-gray-800 mb-4">
+            Bienvenue sur <span className="text-red-600">AtypikHouse</span>
+          </h1>
+          <p className="text-xl text-gray-700">
+            Cabanes dans les arbres, yourtes, logements insolites… <br />
+            <span className="font-semibold text-gray-800">Découvrez des lieux inoubliables</span> pour vos prochaines escapades.
+          </p>
+          <p className="text-base text-gray-500 mt-3">
+            Cette page présente nos services ainsi qu’une vue d’ensemble des biens disponibles à la location.
+          </p>
+          <div className="mt-6">
+            <ScrollLink
+              to="places"
+              smooth={true}
+              duration={800}
+              offset={-60}
+              className="inline-block cursor-pointer rounded-full bg-red-500 px-6 py-3 text-white font-semibold shadow hover:bg-red-600 transition duration-300"
+            >
+              Explorer les hébergements
+            </ScrollLink>
           </div>
-        )}
-      </div>
+        </div>
+      </section>
+
+      {/* SECTION PLACES */}
+      <Element name="places" className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-10">
+            Nos hébergements atypiques
+          </h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+            {visiblePlaces.length > 0 ? (
+              visiblePlaces.map((place) => <PlaceCard place={place} key={place._id} />)
+            ) : (
+              <p className="text-gray-600">Aucun hébergement trouvé.</p>
+            )}
+          </div>
+          {places.length > 6 && (
+            <div className="mt-8">
+              <Link
+                to="/places"
+                className="inline-block bg-red-500 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-red-600 transition"
+              >
+                Voir plus
+              </Link>
+            </div>
+          )}
+        </div>
+      </Element>
+
+      {/* SECTION DEVENEZ HOTE */}
+      <section  className="py-20 px-6 bg-gradient-to-b from-red-50 to-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Louez votre hébergement atypique
+          </h2>
+          <p className="text-lg text-gray-600 mb-6">
+            Rejoignez AtypikHouse et touchez des voyageurs à la recherche d’expériences uniques.
+          </p>
+          <Link
+            to="/OwnerBenefitsPage"
+            className="inline-block bg-primary text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-red-600 transition"
+          >
+            En savoir plus
+          </Link>
+        </div>
+      </section>
+
+
     </>
   );
 };
 
 export default IndexPage;
-
-
-
-//----------------
-
-// import React, { useState, useEffect } from 'react';
-// import { usePlaces } from '../../hooks';
-// import Spinner from '@/components/ui/Spinner';
-// import PlaceCard from '@/components/ui/PlaceCard';
-
-// const IndexPage = () => {
-//   const allPlaces = usePlaces();
-//   // const { places, loading } = allPlaces;
-//   const { places = [], loading = false } = allPlaces || {};
-//   console.log("✅ Places reçues:", places);
-
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [placesPerPage] = useState(12); // Vous pouvez ajuster ce nombre selon vos besoins
-
-//   // Get current places
-//   const indexOfLastPlace = currentPage * placesPerPage;
-//   const indexOfFirstPlace = indexOfLastPlace - placesPerPage;
-//   const currentPlaces = places.slice(indexOfFirstPlace, indexOfLastPlace);
-
-//   // Change page
-//   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-//   useEffect(() => {
-//     // Reset to first page when places change (e.g., after filtering)
-//     setCurrentPage(1);
-//   }, [places]);
-
-//   if (loading) {
-//     return <Spinner />;
-//   }
-
-//   return (
-//     <div className="px-4 py-38  bg-gray-100">
-//       <div className="grid grid-cols-1 justify-items-center md:grid-cols-2 md:gap-0 lg:grid-cols-3 lg:gap-2 xl:grid-cols-4 xl:gap-10">
-//         {currentPlaces.length > 0 ? (
-//           currentPlaces.map((place) => (
-//             <PlaceCard place={place} key={place._id} />
-//           ))
-//         ) : (
-//           <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50">
-//             <div className="text-center p-8 bg-white shadow-lg rounded-lg">
-//               <h1 className="text-3xl font-semibold mb-4">Result not found!</h1>
-//               <p className="text-lg font-semibold mb-6">
-//                 Sorry, we couldn&#39;t find the place you&#39;re looking for.
-//               </p>
-//               <button className="rounded-full bg-primary p-2 text-white hover:bg-primary-dark transition duration-300">
-//                 <a href="/" className="flex items-center justify-center gap-1">
-//                   <svg
-//                     xmlns="http://www.w3.org/2000/svg"
-//                     width="16"
-//                     height="16"
-//                     viewBox="0 0 24 24"
-//                     fill="none"
-//                     stroke="currentColor"
-//                     strokeWidth="2"
-//                     strokeLinecap="round"
-//                     strokeLinejoin="round"
-//                     className="h-5 w-5"
-//                   >
-//                     <line x1="19" y1="12" x2="5" y2="12"></line>
-//                     <polyline points="12 19 5 12 12 5"></polyline>
-//                   </svg>
-//                   Go back
-//                 </a>
-//               </button>
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//       {places.length > placesPerPage && (
-//         <Pagination
-//           placesPerPage={placesPerPage}
-//           totalPlaces={places.length}
-//           paginate={paginate}
-//           currentPage={currentPage}
-//         />
-//       )}
-//     </div>
-//   );
-// };

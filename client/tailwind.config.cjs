@@ -13,6 +13,9 @@ module.exports = {
 
   ],
   theme: {
+    extend: {
+      scrollBehavior: ['responsive']
+    },
     container: {
       center: true,
       padding: '2rem',
@@ -21,6 +24,15 @@ module.exports = {
       },
     },
     extend: {
+      animation: {
+        fadeIn: 'fadeIn 1s ease-in-out'
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 }
+        }
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -79,6 +91,7 @@ module.exports = {
       },
     },
   },
+  
   // plugins: [require('tailwindcss-animate'), require('daisyui')],
   // daisyui: {
   //   themes: ['light', 'dark', 'cupcake'],

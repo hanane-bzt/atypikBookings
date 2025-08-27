@@ -1,16 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { useContext } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+import { UserContext } from '@/providers/UserProvider';
 
 const OwnerBenefitsPage = () => {
+  const { user } = useContext(UserContext);
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-gray-100">
       <Helmet>
         <title>Devenez propriétaire sur AtypikBookings | Louez votre bien</title>
-        <meta name="description" content="Générez des revenus en louant votre logement atypique sur AtypikBookings. Grande visibilité, paiements sécurisés et assistance 24/7." />
-        <meta name="keywords" content="location saisonnière, hébergement atypique, louer bien immobilier, propriétaires, Airbnb alternatif" />
+        <meta
+          name="description"
+          content="Générez des revenus en louant votre logement atypique sur AtypikBookings. Grande visibilité, paiements sécurisés et assistance 24/7."
+        />
+        <meta
+          name="keywords"
+          content="location saisonnière, hébergement atypique, louer bien immobilier, propriétaires, Airbnb alternatif"
+        />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://atypikbookings.com/owner-benefits" />
+        <link rel="canonical" href="https://atypikbookings.com/OwnerBenefits" />
       </Helmet>
 
       <header className="text-center">
@@ -54,15 +63,24 @@ const OwnerBenefitsPage = () => {
         </article>
       </section>
 
-      <div className="mt-8">
-        <Link 
-          to="/register" 
-          className="bg-primary text-white px-6 py-3 rounded-full shadow-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 hover:bg-primary-dark transition"
-          aria-label="S'inscrire pour devenir propriétaire"
-        >
-          🚀 Je deviens hôte dès maintenant
-        </Link>
-      </div>
+      {!user && (
+        <div className="mt-10 text-center text-red-500">
+          Connectez-vous pour publier un logement. <br />
+          <Link to="/login" className="underline text-primary">Se connecter</Link>
+        </div>
+      )}
+
+      {user && (
+        <div className="mt-8">
+          <Link
+            to="/account/places/new"
+            className="bg-primary text-white px-6 py-3 rounded-full shadow-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 hover:bg-primary-dark transition"
+            aria-label="Ajouter un logement"
+          >
+            ➕ Ajouter un logement
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

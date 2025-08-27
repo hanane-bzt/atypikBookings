@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-var _a;
+var _a, _b;
 import { jsx, Fragment, jsxs } from "react/jsx-runtime";
 import * as t from "react";
 import t__default, { forwardRef, useEffect, useRef, useLayoutEffect, useReducer, useState, cloneElement, isValidElement, createContext, useContext, Component } from "react";
@@ -23,8 +23,13 @@ import stream, { Readable } from "stream";
 import { EventEmitter } from "events";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { Avatar as Avatar$1, AvatarImage as AvatarImage$1 } from "@radix-ui/react-avatar";
-import { Helmet } from "react-helmet";
+import { motion } from "framer-motion";
+import { Helmet as Helmet$1 } from "react-helmet";
+import { Link as Link$1, Element } from "react-scroll";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import fastCompare from "react-fast-compare";
+import invariant from "invariant";
+import shallowEqual from "shallowequal";
 import { twMerge } from "tailwind-merge";
 import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
@@ -34,9 +39,6 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { differenceInCalendarDays, format, addDays, differenceInDays } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import "react-fast-compare";
-import "invariant";
-import "shallowequal";
 const u = (t2) => "number" == typeof t2 && !isNaN(t2), d = (t2) => "string" == typeof t2, p = (t2) => "function" == typeof t2, m = (t2) => d(t2) || p(t2) ? t2 : null, f = (t2) => isValidElement(t2) || d(t2) || p(t2) || u(t2);
 function g(t2, e, n) {
   void 0 === n && (n = 300);
@@ -3549,7 +3551,7 @@ const useProvideAuth = () => {
     setItemsInLocalStorage("token", token);
   };
   const register = async ({ name, email, password }) => {
-    var _a2, _b;
+    var _a2, _b2;
     try {
       const { data } = await axiosInstance.post("/user/register", {
         name,
@@ -3561,12 +3563,12 @@ const useProvideAuth = () => {
     } catch (err) {
       return {
         success: false,
-        message: ((_b = (_a2 = err == null ? void 0 : err.response) == null ? void 0 : _a2.data) == null ? void 0 : _b.message) || "Erreur serveur"
+        message: ((_b2 = (_a2 = err == null ? void 0 : err.response) == null ? void 0 : _a2.data) == null ? void 0 : _b2.message) || "Erreur serveur"
       };
     }
   };
   const login = async ({ email, password }) => {
-    var _a2, _b;
+    var _a2, _b2;
     try {
       const { data } = await axiosInstance.post("/user/login", {
         email,
@@ -3577,7 +3579,7 @@ const useProvideAuth = () => {
     } catch (err) {
       return {
         success: false,
-        message: ((_b = (_a2 = err == null ? void 0 : err.response) == null ? void 0 : _a2.data) == null ? void 0 : _b.message) || "Erreur serveur"
+        message: ((_b2 = (_a2 = err == null ? void 0 : err.response) == null ? void 0 : _a2.data) == null ? void 0 : _b2.message) || "Erreur serveur"
       };
     }
   };
@@ -3841,99 +3843,62 @@ const Header = () => {
   );
 };
 const Footer = () => {
-  return /* @__PURE__ */ jsx("div", { className: "flex  w-full justify-center bg-gray-100 pb-8", children: /* @__PURE__ */ jsxs("div", { className: "flex w-full max-w-screen-xl flex-col items-center px-6", children: [
-    /* @__PURE__ */ jsxs("div", { className: "grid  w-full grid-cols-1 gap-4 py-8 text-sm md:grid-cols-3 ", children: [
-      /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-1", children: [
-        /* @__PURE__ */ jsx("strong", { className: "font-medium", children: "Support" }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Help Center" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Get help with a safety issue" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Air cover" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Anti-discrimination" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Disablity support" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Cancellation options" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Report neighbourhood concern" }) })
+  return /* @__PURE__ */ jsx("div", { className: "w-full bg-gray-100 py-10 px-4 md:px-8", children: /* @__PURE__ */ jsxs("div", { className: "max-w-screen-xl mx-auto flex flex-col items-center", children: [
+    /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-10 w-full text-sm", children: [
+      /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2", children: [
+        /* @__PURE__ */ jsx("strong", { className: "font-medium text-gray-900", children: "Support" }),
+        [
+          "Help Center",
+          "Get help with a safety issue",
+          "Air cover",
+          "Anti-discrimination",
+          "Disability support",
+          "Cancellation options",
+          "Report neighbourhood concern"
+        ].map((item, i) => /* @__PURE__ */ jsx("p", { className: "text-gray-700 hover:underline cursor-pointer", children: item }, i))
       ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-1", children: [
-        /* @__PURE__ */ jsx("strong", { className: "font-medium", children: "Hosting" }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "AtypikHouse your home" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "AirCover for Hosts" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Hosting resources" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Community forum" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Hosting responsibly" }) })
+      /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2", children: [
+        /* @__PURE__ */ jsx("strong", { className: "font-medium text-gray-900", children: "Hosting" }),
+        [
+          "AtypikHouse your home",
+          "AirCover for Hosts",
+          "Hosting resources",
+          "Community forum",
+          "Hosting responsibly"
+        ].map((item, i) => /* @__PURE__ */ jsx("p", { className: "text-gray-700 hover:underline cursor-pointer", children: item }, i))
       ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-1", children: [
-        /* @__PURE__ */ jsx("strong", { className: "font-medium", children: "AtypikHouse" }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Newsroom" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "New features" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Careers" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Investors" }) }),
-        /* @__PURE__ */ jsx("p", { children: /* @__PURE__ */ jsx("span", { className: "cursor-pointer font-normal text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "AtypikHouse.org emergency stays" }) })
+      /* @__PURE__ */ jsxs("div", { className: "flex flex-col gap-2", children: [
+        /* @__PURE__ */ jsx("strong", { className: "font-medium text-gray-900", children: "AtypikHouse" }),
+        [
+          "Newsroom",
+          "New features",
+          "Careers",
+          "Investors",
+          "AtypikHouse.org emergency stays"
+        ].map((item, i) => /* @__PURE__ */ jsx("p", { className: "text-gray-700 hover:underline cursor-pointer", children: item }, i))
       ] })
     ] }),
-    /* @__PURE__ */ jsx("div", { className: "my-4 w-full border-[1px] border-gray-200" }),
-    /* @__PURE__ */ jsxs("div", { className: "flex w-full flex-col items-center justify-between gap-4 md:gap-0 lg:flex-row", children: [
-      /* @__PURE__ */ jsxs("div", { className: "mt-4 flex w-full justify-between gap-10 md:order-last md:w-auto", children: [
-        /* @__PURE__ */ jsxs("div", { className: "flex text-sm font-semibold", children: [
-          /* @__PURE__ */ jsx(
-            "svg",
-            {
-              xmlns: "http://www.w3.org/2000/svg",
-              fill: "none",
-              viewBox: "0 0 24 24",
-              strokeWidth: "1.5",
-              stroke: "currentColor",
-              className: "mr-2 h-6 w-6",
-              children: /* @__PURE__ */ jsx(
-                "path",
-                {
-                  strokeLinecap: "round",
-                  strokeLinejoin: "round",
-                  d: "M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
-                }
-              )
-            }
-          ),
-          "English(ENG) ",
-          /* @__PURE__ */ jsx("span", { className: "mx-4", children: "€ EUR" })
+    /* @__PURE__ */ jsx("div", { className: "w-full border-t border-gray-200 my-6" }),
+    /* @__PURE__ */ jsxs("div", { className: "w-full flex flex-col gap-6 md:flex-row md:justify-between md:items-center text-sm text-gray-700", children: [
+      /* @__PURE__ */ jsxs("div", { className: "flex flex-col md:flex-row md:items-center gap-4", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex items-center", children: [
+          "🌍 English (ENG) ",
+          /* @__PURE__ */ jsx("span", { className: "ml-4", children: "€ EUR" })
         ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex gap-3", children: [
-          /* @__PURE__ */ jsx(
-            "svg",
-            {
-              xmlns: "http://www.w3.org/2000/svg",
-              className: "h-6 w-6 cursor-pointer",
-              viewBox: "0 0 50 50",
-              children: /* @__PURE__ */ jsx("path", { d: "M41,4H9C6.24,4,4,6.24,4,9v32c0,2.76,2.24,5,5,5h32c2.76,0,5-2.24,5-5V9C46,6.24,43.76,4,41,4z M37,19h-2c-2.14,0-3,0.5-3,2 v3h5l-1,5h-4v15h-5V29h-4v-5h4v-3c0-4,2-7,6-7c2.9,0,4,1,4,1V19z" })
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            "svg",
-            {
-              xmlns: "http://www.w3.org/2000/svg",
-              className: "h-6 w-6 cursor-pointer",
-              viewBox: "0 0 50 50",
-              children: /* @__PURE__ */ jsx("path", { d: "M 11 4 C 7.134 4 4 7.134 4 11 L 4 39 C 4 42.866 7.134 46 11 46 L 39 46 C 42.866 46 46 42.866 46 39 L 46 11 C 46 7.134 42.866 4 39 4 L 11 4 z M 13.085938 13 L 21.023438 13 L 26.660156 21.009766 L 33.5 13 L 36 13 L 27.789062 22.613281 L 37.914062 37 L 29.978516 37 L 23.4375 27.707031 L 15.5 37 L 13 37 L 22.308594 26.103516 L 13.085938 13 z M 16.914062 15 L 31.021484 35 L 34.085938 35 L 19.978516 15 L 16.914062 15 z" })
-            }
-          ),
-          /* @__PURE__ */ jsx(
-            "svg",
-            {
-              xmlns: "http://www.w3.org/2000/svg",
-              className: "h-6 w-6 cursor-pointer",
-              viewBox: "0 0 50 50",
-              children: /* @__PURE__ */ jsx("path", { d: "M 16 3 C 8.83 3 3 8.83 3 16 L 3 34 C 3 41.17 8.83 47 16 47 L 34 47 C 41.17 47 47 41.17 47 34 L 47 16 C 47 8.83 41.17 3 34 3 L 16 3 z M 37 11 C 38.1 11 39 11.9 39 13 C 39 14.1 38.1 15 37 15 C 35.9 15 35 14.1 35 13 C 35 11.9 35.9 11 37 11 z M 25 14 C 31.07 14 36 18.93 36 25 C 36 31.07 31.07 36 25 36 C 18.93 36 14 31.07 14 25 C 14 18.93 18.93 14 25 14 z M 25 16 C 20.04 16 16 20.04 16 25 C 16 29.96 20.04 34 25 34 C 29.96 34 34 29.96 34 25 C 34 20.04 29.96 16 25 16 z" })
-            }
-          )
+        /* @__PURE__ */ jsxs("div", { className: "flex gap-4", children: [
+          /* @__PURE__ */ jsx("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-6 cursor-pointer", viewBox: "0 0 50 50", children: /* @__PURE__ */ jsx("path", { d: "M41,4H9C6.24,4,4,6.24,4,9v32c0,2.76,2.24,5,5,5h32c2.76,0,5-2.24,5-5V9C46,6.24,43.76,4,41,4z M37,19h-2c-2.14,0-3,0.5-3,2 v3h5l-1,5h-4v15h-5V29h-4v-5h4v-3c0-4,2-7,6-7c2.9,0,4,1,4,1V19z" }) }),
+          /* @__PURE__ */ jsx("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-6 cursor-pointer", viewBox: "0 0 50 50", children: /* @__PURE__ */ jsx("path", { d: "M 11 4 C 7.134 4 4 7.134 4 11 L 4 39 C 4 42.866 7.134 46 11 46 L 39 46 C 42.866 46 46 42.866 46 39 L 46 11 C 46 7.134 42.866 4 39 4 L 11 4 z M 13.085938 13 L 21.023438 13 L 26.660156 21.009766 L 33.5 13 L 36 13 L 27.789062 22.613281 L 37.914062 37 L 29.978516 37 L 23.4375 27.707031 L 15.5 37 L 13 37 L 22.308594 26.103516 L 13.085938 13 z M 16.914062 15 L 31.021484 35 L 34.085938 35 L 19.978516 15 L 16.914062 15 z" }) }),
+          /* @__PURE__ */ jsx("svg", { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-6 cursor-pointer", viewBox: "0 0 50 50", children: /* @__PURE__ */ jsx("path", { d: "M 16 3 C 8.83 3 3 8.83 3 16 L 3 34 C 3 41.17 8.83 47 16 47 L 34 47 C 41.17 47 47 41.17 47 34 L 47 16 C 47 8.83 41.17 3 34 3 L 16 3 z M 37 11 C 38.1 11 39 11.9 39 13 C 39 14.1 38.1 15 37 15 C 35.9 15 35 14.1 35 13 C 35 11.9 35.9 11 37 11 z M 25 14 C 31.07 14 36 18.93 36 25 C 36 31.07 31.07 36 25 36 C 18.93 36 14 31.07 14 25 C 14 18.93 18.93 14 25 14 z M 25 16 C 20.04 16 16 20.04 16 25 C 16 29.96 20.04 34 25 34 C 29.96 34 34 29.96 34 25 C 34 20.04 29.96 16 25 16 z" }) })
         ] })
       ] }),
-      /* @__PURE__ */ jsxs("div", { className: "flex w-full flex-col gap-2 px-1 font-normal text-gray-700 md:w-auto md:flex-row md:items-center md:gap-8", children: [
-        /* @__PURE__ */ jsx("p", { className: "text-sm", children: "© 2023 At, Inc." }),
-        /* @__PURE__ */ jsx("div", { children: /* @__PURE__ */ jsxs("ul", { className: " flex gap-6 text-sm text-gray-700", children: [
-          /* @__PURE__ */ jsx("li", { className: "cursor-pointer text-gray-700 decoration-1 underline-offset-1 hover:underline md:list-disc", children: "Privacy" }),
-          /* @__PURE__ */ jsx("li", { className: "cursor-pointer list-disc text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Terms" }),
-          /* @__PURE__ */ jsx("li", { className: "cursor-pointer list-disc text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Sitemap" }),
-          /* @__PURE__ */ jsx("li", { className: "cursor-pointer list-disc text-gray-700 decoration-1 underline-offset-1 hover:underline", children: "Company details" })
-        ] }) })
+      /* @__PURE__ */ jsxs("div", { className: "flex flex-col md:flex-row md:items-center gap-3 md:gap-6", children: [
+        /* @__PURE__ */ jsx("p", { children: "© 2025 AtypikHouse. Tous droits réservés." }),
+        /* @__PURE__ */ jsxs("ul", { className: "flex flex-col md:flex-row gap-2 md:gap-6", children: [
+          /* @__PURE__ */ jsx("li", { className: "hover:underline", children: /* @__PURE__ */ jsx(Link, { to: "/legal", children: "Mentions légales" }) }),
+          /* @__PURE__ */ jsx("li", { className: "hover:underline cursor-pointer", children: "Confidentialité" }),
+          /* @__PURE__ */ jsx("li", { className: "hover:underline cursor-pointer", children: "Conditions" }),
+          /* @__PURE__ */ jsx("li", { className: "hover:underline cursor-pointer", children: "Plan du site" })
+        ] })
       ] })
     ] })
   ] }) });
@@ -3958,97 +3923,114 @@ const Spinner = () => {
     /* @__PURE__ */ jsx("span", { className: "mt-2 text-sm text-gray-500", children: "Chargement..." })
   ] });
 };
+const isServer = typeof window === "undefined";
+const Wrapper = isServer ? "div" : motion.div;
+const WrapperLink = ({ to, children, ...props }) => isServer ? /* @__PURE__ */ jsx("a", { href: to, ...props, children }) : /* @__PURE__ */ jsx(Link, { to, ...props, children });
 const PlaceCard = ({ place }) => {
-  const { _id: placeId, photos, address, title, price } = place;
-  return /* @__PURE__ */ jsx(Link, { to: `/place/${placeId}`, className: "m-4 flex flex-col md:m-2 xl:m-0", children: /* @__PURE__ */ jsxs("div", { className: "card ", children: [
-    (photos == null ? void 0 : photos[0]) && /* @__PURE__ */ jsx(
-      "img",
-      {
-        src: `${photos == null ? void 0 : photos[0]}`,
-        className: "h-4/5 w-full rounded-xl object-cover"
-      }
-    ),
-    /* @__PURE__ */ jsx("h2", { className: "truncate font-bold", children: address }),
-    /* @__PURE__ */ jsx("h3", { className: "truncate text-sm text-gray-500", children: title }),
-    /* @__PURE__ */ jsxs("div", { className: "mt-1", children: [
-      /* @__PURE__ */ jsxs("span", { className: "font-semibold", children: [
-        price,
-        "€ "
-      ] }),
-      "per night"
-    ] })
-  ] }) });
+  const {
+    _id: placeId,
+    photos = [],
+    address = "Adresse non disponible",
+    title = "Titre non disponible",
+    price = "N/A"
+  } = place;
+  return /* @__PURE__ */ jsx(
+    Wrapper,
+    {
+      initial: { opacity: 0, y: 30 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.4 },
+      whileHover: { scale: 1.02 },
+      className: "w-full max-w-sm bg-white rounded-xl shadow-md hover:shadow-xl transition-transform transform",
+      children: /* @__PURE__ */ jsxs(WrapperLink, { to: `/place/${placeId}`, className: "block", children: [
+        /* @__PURE__ */ jsx("div", { className: "h-48 w-full overflow-hidden rounded-t-xl", children: /* @__PURE__ */ jsx(
+          "img",
+          {
+            src: photos[0] || "/default.jpg",
+            alt: `Photo de ${title}`,
+            className: "h-full w-full object-cover",
+            ...!isServer && { loading: "lazy" }
+          }
+        ) }),
+        /* @__PURE__ */ jsxs("div", { className: "p-4", children: [
+          /* @__PURE__ */ jsx("h2", { className: "text-lg font-semibold text-gray-800 truncate", children: address }),
+          /* @__PURE__ */ jsx("h3", { className: "text-sm text-gray-500 truncate", children: title }),
+          /* @__PURE__ */ jsxs("div", { className: "mt-2", children: [
+            /* @__PURE__ */ jsxs("span", { className: "text-primary font-semibold", children: [
+              price,
+              "€"
+            ] }),
+            " ",
+            /* @__PURE__ */ jsx("span", { className: "text-sm text-gray-600", children: "/ nuit" })
+          ] })
+        ] })
+      ] })
+    }
+  );
 };
 const IndexPage = () => {
-  const allPlaces = usePlaces();
-  const { places = [], loading = false } = allPlaces || {};
-  if (loading) {
-    return /* @__PURE__ */ jsx(Spinner, {});
-  }
-  console.log("places", places);
+  const { places = [], loading = false } = usePlaces() || {};
+  if (loading) return /* @__PURE__ */ jsx(Spinner, {});
+  const visiblePlaces = places.slice(0, 6);
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "AtypikHouse - Découvrez des habitats uniques" }),
-      /* @__PURE__ */ jsx(
-        "meta",
-        {
-          name: "description",
-          content: "Découvrez des lieux uniques comme des cabanes dans les arbres, yourtes, et autres hébergements atypiques disponibles à la location."
-        }
-      ),
-      /* @__PURE__ */ jsx(
-        "meta",
-        {
-          name: "keywords",
-          content: "locations, habitats atypiques, cabanes, yourtes, voyage, hébergements"
-        }
-      ),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: "Découvrez des lieux uniques comme des cabanes dans les arbres, yourtes, et autres hébergements atypiques disponibles à la location." }),
+      /* @__PURE__ */ jsx("meta", { name: "keywords", content: "locations, habitats atypiques, cabanes, yourtes, voyage, hébergements" }),
       /* @__PURE__ */ jsx("meta", { name: "robots", content: "index, follow" }),
       /* @__PURE__ */ jsx("meta", { property: "og:title", content: "AtypikHouse - Habitats uniques" }),
-      /* @__PURE__ */ jsx(
-        "meta",
-        {
-          property: "og:description",
-          content: "Réservez des habitats atypiques uniques : cabanes, yourtes, et bien plus encore !"
-        }
-      ),
+      /* @__PURE__ */ jsx("meta", { property: "og:description", content: "Réservez des habitats atypiques uniques : cabanes, yourtes, et bien plus encore !" }),
       /* @__PURE__ */ jsx("meta", { property: "og:url", content: "https://votre-domaine.com" }),
       /* @__PURE__ */ jsx("meta", { property: "og:type", content: "website" })
     ] }),
-    /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 justify-items-center px-4 py-32 md:grid-cols-2 md:gap-0 lg:grid-cols-3 lg:gap-2 xl:grid-cols-4 xl:gap-10", children: places.length > 0 ? places.map((place) => /* @__PURE__ */ jsx(PlaceCard, { place }, place._id)) : /* @__PURE__ */ jsxs(
-      "div",
-      {
-        className: "absolute left-1/2 right-1/2 top-40 flex w-full -translate-x-1/2 transform flex-col p-10 md:w-1/2",
-        role: "alert",
-        "aria-label": "No results found",
-        children: [
-          /* @__PURE__ */ jsx("h1", { className: "text-3xl font-semibold", children: "Aucun résultat trouvé !" }),
-          /* @__PURE__ */ jsx("p", { className: "text-lg font-semibold", children: "Désolé, nous n'avons pas trouvé le lieu que vous recherchez." }),
-          /* @__PURE__ */ jsx("button", { className: "mt-4 w-32 rounded-full bg-primary p-2 text-white", children: /* @__PURE__ */ jsxs("a", { href: "/", className: "flex items-center justify-center gap-1", children: [
-            /* @__PURE__ */ jsxs(
-              "svg",
-              {
-                xmlns: "http://www.w3.org/2000/svg",
-                width: "16",
-                height: "16",
-                viewBox: "0 0 24 24",
-                fill: "none",
-                stroke: "currentColor",
-                strokeWidth: "2",
-                strokeLinecap: "round",
-                strokeLinejoin: "round",
-                className: "h-5 w-5",
-                children: [
-                  /* @__PURE__ */ jsx("line", { x1: "19", y1: "12", x2: "5", y2: "12" }),
-                  /* @__PURE__ */ jsx("polyline", { points: "12 19 5 12 12 5" })
-                ]
-              }
-            ),
-            "Retour"
-          ] }) })
-        ]
-      }
-    ) })
+    /* @__PURE__ */ jsx("section", { id: "hero", className: "h-screen flex items-center justify-center bg-gray-100 shadow-inner rounded-xl px-4", children: /* @__PURE__ */ jsxs("div", { className: "text-center max-w-3xl", children: [
+      /* @__PURE__ */ jsxs("h1", { className: "text-5xl font-extrabold text-gray-800 mb-4", children: [
+        "Bienvenue sur ",
+        /* @__PURE__ */ jsx("span", { className: "text-red-600", children: "AtypikHouse" })
+      ] }),
+      /* @__PURE__ */ jsxs("p", { className: "text-xl text-gray-700", children: [
+        "Cabanes dans les arbres, yourtes, logements insolites… ",
+        /* @__PURE__ */ jsx("br", {}),
+        /* @__PURE__ */ jsx("span", { className: "font-semibold text-gray-800", children: "Découvrez des lieux inoubliables" }),
+        " pour vos prochaines escapades."
+      ] }),
+      /* @__PURE__ */ jsx("p", { className: "text-base text-gray-500 mt-3", children: "Cette page présente nos services ainsi qu’une vue d’ensemble des biens disponibles à la location." }),
+      /* @__PURE__ */ jsx("div", { className: "mt-6", children: /* @__PURE__ */ jsx(
+        Link$1,
+        {
+          to: "places",
+          smooth: true,
+          duration: 800,
+          offset: -60,
+          className: "inline-block cursor-pointer rounded-full bg-red-500 px-6 py-3 text-white font-semibold shadow hover:bg-red-600 transition duration-300",
+          children: "Explorer les hébergements"
+        }
+      ) })
+    ] }) }),
+    /* @__PURE__ */ jsx(Element, { name: "places", className: "py-20 px-6 bg-white", children: /* @__PURE__ */ jsxs("div", { className: "max-w-6xl mx-auto text-center", children: [
+      /* @__PURE__ */ jsx("h2", { className: "text-3xl font-bold text-gray-800 mb-10", children: "Nos hébergements atypiques" }),
+      /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3", children: visiblePlaces.length > 0 ? visiblePlaces.map((place) => /* @__PURE__ */ jsx(PlaceCard, { place }, place._id)) : /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Aucun hébergement trouvé." }) }),
+      places.length > 6 && /* @__PURE__ */ jsx("div", { className: "mt-8", children: /* @__PURE__ */ jsx(
+        Link,
+        {
+          to: "/places",
+          className: "inline-block bg-red-500 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-red-600 transition",
+          children: "Voir plus"
+        }
+      ) })
+    ] }) }),
+    /* @__PURE__ */ jsx("section", { className: "py-20 px-6 bg-gradient-to-b from-red-50 to-white", children: /* @__PURE__ */ jsxs("div", { className: "max-w-4xl mx-auto text-center", children: [
+      /* @__PURE__ */ jsx("h2", { className: "text-3xl font-bold text-gray-800 mb-4", children: "Louez votre hébergement atypique" }),
+      /* @__PURE__ */ jsx("p", { className: "text-lg text-gray-600 mb-6", children: "Rejoignez AtypikHouse et touchez des voyageurs à la recherche d’expériences uniques." }),
+      /* @__PURE__ */ jsx(
+        Link,
+        {
+          to: "/OwnerBenefitsPage",
+          className: "inline-block bg-primary text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-red-600 transition",
+          children: "En savoir plus"
+        }
+      )
+    ] }) })
   ] });
 };
 const RegisterPage = () => {
@@ -4086,7 +4068,7 @@ const RegisterPage = () => {
     return /* @__PURE__ */ jsx(Navigate, { to: "/" });
   }
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "Inscription - AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -4172,6 +4154,868 @@ const RegisterPage = () => {
         /* @__PURE__ */ jsx(Link, { className: "text-black underline", to: "/login", children: "Connectez-vous ici" })
       ] })
     ] }) })
+  ] });
+};
+var TAG_NAMES = /* @__PURE__ */ ((TAG_NAMES2) => {
+  TAG_NAMES2["BASE"] = "base";
+  TAG_NAMES2["BODY"] = "body";
+  TAG_NAMES2["HEAD"] = "head";
+  TAG_NAMES2["HTML"] = "html";
+  TAG_NAMES2["LINK"] = "link";
+  TAG_NAMES2["META"] = "meta";
+  TAG_NAMES2["NOSCRIPT"] = "noscript";
+  TAG_NAMES2["SCRIPT"] = "script";
+  TAG_NAMES2["STYLE"] = "style";
+  TAG_NAMES2["TITLE"] = "title";
+  TAG_NAMES2["FRAGMENT"] = "Symbol(react.fragment)";
+  return TAG_NAMES2;
+})(TAG_NAMES || {});
+var SEO_PRIORITY_TAGS = {
+  link: { rel: ["amphtml", "canonical", "alternate"] },
+  script: { type: ["application/ld+json"] },
+  meta: {
+    charset: "",
+    name: ["generator", "robots", "description"],
+    property: [
+      "og:type",
+      "og:title",
+      "og:url",
+      "og:image",
+      "og:image:alt",
+      "og:description",
+      "twitter:url",
+      "twitter:title",
+      "twitter:description",
+      "twitter:image",
+      "twitter:image:alt",
+      "twitter:card",
+      "twitter:site"
+    ]
+  }
+};
+var VALID_TAG_NAMES = Object.values(TAG_NAMES);
+var REACT_TAG_MAP = {
+  accesskey: "accessKey",
+  charset: "charSet",
+  class: "className",
+  contenteditable: "contentEditable",
+  contextmenu: "contextMenu",
+  "http-equiv": "httpEquiv",
+  itemprop: "itemProp",
+  tabindex: "tabIndex"
+};
+var HTML_TAG_MAP = Object.entries(REACT_TAG_MAP).reduce(
+  (carry, [key, value]) => {
+    carry[value] = key;
+    return carry;
+  },
+  {}
+);
+var HELMET_ATTRIBUTE = "data-rh";
+var HELMET_PROPS = {
+  DEFAULT_TITLE: "defaultTitle",
+  DEFER: "defer",
+  ENCODE_SPECIAL_CHARACTERS: "encodeSpecialCharacters",
+  ON_CHANGE_CLIENT_STATE: "onChangeClientState",
+  TITLE_TEMPLATE: "titleTemplate",
+  PRIORITIZE_SEO_TAGS: "prioritizeSeoTags"
+};
+var getInnermostProperty = (propsList, property) => {
+  for (let i = propsList.length - 1; i >= 0; i -= 1) {
+    const props = propsList[i];
+    if (Object.prototype.hasOwnProperty.call(props, property)) {
+      return props[property];
+    }
+  }
+  return null;
+};
+var getTitleFromPropsList = (propsList) => {
+  let innermostTitle = getInnermostProperty(
+    propsList,
+    "title"
+    /* TITLE */
+  );
+  const innermostTemplate = getInnermostProperty(propsList, HELMET_PROPS.TITLE_TEMPLATE);
+  if (Array.isArray(innermostTitle)) {
+    innermostTitle = innermostTitle.join("");
+  }
+  if (innermostTemplate && innermostTitle) {
+    return innermostTemplate.replace(/%s/g, () => innermostTitle);
+  }
+  const innermostDefaultTitle = getInnermostProperty(propsList, HELMET_PROPS.DEFAULT_TITLE);
+  return innermostTitle || innermostDefaultTitle || void 0;
+};
+var getOnChangeClientState = (propsList) => getInnermostProperty(propsList, HELMET_PROPS.ON_CHANGE_CLIENT_STATE) || (() => {
+});
+var getAttributesFromPropsList = (tagType, propsList) => propsList.filter((props) => typeof props[tagType] !== "undefined").map((props) => props[tagType]).reduce((tagAttrs, current) => ({ ...tagAttrs, ...current }), {});
+var getBaseTagFromPropsList = (primaryAttributes, propsList) => propsList.filter((props) => typeof props[
+  "base"
+  /* BASE */
+] !== "undefined").map((props) => props[
+  "base"
+  /* BASE */
+]).reverse().reduce((innermostBaseTag, tag) => {
+  if (!innermostBaseTag.length) {
+    const keys = Object.keys(tag);
+    for (let i = 0; i < keys.length; i += 1) {
+      const attributeKey = keys[i];
+      const lowerCaseAttributeKey = attributeKey.toLowerCase();
+      if (primaryAttributes.indexOf(lowerCaseAttributeKey) !== -1 && tag[lowerCaseAttributeKey]) {
+        return innermostBaseTag.concat(tag);
+      }
+    }
+  }
+  return innermostBaseTag;
+}, []);
+var warn = (msg) => console && typeof console.warn === "function" && console.warn(msg);
+var getTagsFromPropsList = (tagName, primaryAttributes, propsList) => {
+  const approvedSeenTags = {};
+  return propsList.filter((props) => {
+    if (Array.isArray(props[tagName])) {
+      return true;
+    }
+    if (typeof props[tagName] !== "undefined") {
+      warn(
+        `Helmet: ${tagName} should be of type "Array". Instead found type "${typeof props[tagName]}"`
+      );
+    }
+    return false;
+  }).map((props) => props[tagName]).reverse().reduce((approvedTags, instanceTags) => {
+    const instanceSeenTags = {};
+    instanceTags.filter((tag) => {
+      let primaryAttributeKey;
+      const keys2 = Object.keys(tag);
+      for (let i = 0; i < keys2.length; i += 1) {
+        const attributeKey = keys2[i];
+        const lowerCaseAttributeKey = attributeKey.toLowerCase();
+        if (primaryAttributes.indexOf(lowerCaseAttributeKey) !== -1 && !(primaryAttributeKey === "rel" && tag[primaryAttributeKey].toLowerCase() === "canonical") && !(lowerCaseAttributeKey === "rel" && tag[lowerCaseAttributeKey].toLowerCase() === "stylesheet")) {
+          primaryAttributeKey = lowerCaseAttributeKey;
+        }
+        if (primaryAttributes.indexOf(attributeKey) !== -1 && (attributeKey === "innerHTML" || attributeKey === "cssText" || attributeKey === "itemprop")) {
+          primaryAttributeKey = attributeKey;
+        }
+      }
+      if (!primaryAttributeKey || !tag[primaryAttributeKey]) {
+        return false;
+      }
+      const value = tag[primaryAttributeKey].toLowerCase();
+      if (!approvedSeenTags[primaryAttributeKey]) {
+        approvedSeenTags[primaryAttributeKey] = {};
+      }
+      if (!instanceSeenTags[primaryAttributeKey]) {
+        instanceSeenTags[primaryAttributeKey] = {};
+      }
+      if (!approvedSeenTags[primaryAttributeKey][value]) {
+        instanceSeenTags[primaryAttributeKey][value] = true;
+        return true;
+      }
+      return false;
+    }).reverse().forEach((tag) => approvedTags.push(tag));
+    const keys = Object.keys(instanceSeenTags);
+    for (let i = 0; i < keys.length; i += 1) {
+      const attributeKey = keys[i];
+      const tagUnion = {
+        ...approvedSeenTags[attributeKey],
+        ...instanceSeenTags[attributeKey]
+      };
+      approvedSeenTags[attributeKey] = tagUnion;
+    }
+    return approvedTags;
+  }, []).reverse();
+};
+var getAnyTrueFromPropsList = (propsList, checkedTag) => {
+  if (Array.isArray(propsList) && propsList.length) {
+    for (let index = 0; index < propsList.length; index += 1) {
+      const prop = propsList[index];
+      if (prop[checkedTag]) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+var reducePropsToState = (propsList) => ({
+  baseTag: getBaseTagFromPropsList([
+    "href"
+    /* HREF */
+  ], propsList),
+  bodyAttributes: getAttributesFromPropsList("bodyAttributes", propsList),
+  defer: getInnermostProperty(propsList, HELMET_PROPS.DEFER),
+  encode: getInnermostProperty(propsList, HELMET_PROPS.ENCODE_SPECIAL_CHARACTERS),
+  htmlAttributes: getAttributesFromPropsList("htmlAttributes", propsList),
+  linkTags: getTagsFromPropsList(
+    "link",
+    [
+      "rel",
+      "href"
+      /* HREF */
+    ],
+    propsList
+  ),
+  metaTags: getTagsFromPropsList(
+    "meta",
+    [
+      "name",
+      "charset",
+      "http-equiv",
+      "property",
+      "itemprop"
+      /* ITEM_PROP */
+    ],
+    propsList
+  ),
+  noscriptTags: getTagsFromPropsList("noscript", [
+    "innerHTML"
+    /* INNER_HTML */
+  ], propsList),
+  onChangeClientState: getOnChangeClientState(propsList),
+  scriptTags: getTagsFromPropsList(
+    "script",
+    [
+      "src",
+      "innerHTML"
+      /* INNER_HTML */
+    ],
+    propsList
+  ),
+  styleTags: getTagsFromPropsList("style", [
+    "cssText"
+    /* CSS_TEXT */
+  ], propsList),
+  title: getTitleFromPropsList(propsList),
+  titleAttributes: getAttributesFromPropsList("titleAttributes", propsList),
+  prioritizeSeoTags: getAnyTrueFromPropsList(propsList, HELMET_PROPS.PRIORITIZE_SEO_TAGS)
+});
+var flattenArray = (possibleArray) => Array.isArray(possibleArray) ? possibleArray.join("") : possibleArray;
+var checkIfPropsMatch = (props, toMatch) => {
+  const keys = Object.keys(props);
+  for (let i = 0; i < keys.length; i += 1) {
+    if (toMatch[keys[i]] && toMatch[keys[i]].includes(props[keys[i]])) {
+      return true;
+    }
+  }
+  return false;
+};
+var prioritizer = (elementsList, propsToMatch) => {
+  if (Array.isArray(elementsList)) {
+    return elementsList.reduce(
+      (acc, elementAttrs) => {
+        if (checkIfPropsMatch(elementAttrs, propsToMatch)) {
+          acc.priority.push(elementAttrs);
+        } else {
+          acc.default.push(elementAttrs);
+        }
+        return acc;
+      },
+      { priority: [], default: [] }
+    );
+  }
+  return { default: elementsList, priority: [] };
+};
+var without = (obj, key) => {
+  return {
+    ...obj,
+    [key]: void 0
+  };
+};
+var SELF_CLOSING_TAGS = [
+  "noscript",
+  "script",
+  "style"
+  /* STYLE */
+];
+var encodeSpecialCharacters = (str, encode2 = true) => {
+  if (encode2 === false) {
+    return String(str);
+  }
+  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
+};
+var generateElementAttributesAsString = (attributes) => Object.keys(attributes).reduce((str, key) => {
+  const attr = typeof attributes[key] !== "undefined" ? `${key}="${attributes[key]}"` : `${key}`;
+  return str ? `${str} ${attr}` : attr;
+}, "");
+var generateTitleAsString = (type, title, attributes, encode2) => {
+  const attributeString = generateElementAttributesAsString(attributes);
+  const flattenedTitle = flattenArray(title);
+  return attributeString ? `<${type} ${HELMET_ATTRIBUTE}="true" ${attributeString}>${encodeSpecialCharacters(
+    flattenedTitle,
+    encode2
+  )}</${type}>` : `<${type} ${HELMET_ATTRIBUTE}="true">${encodeSpecialCharacters(
+    flattenedTitle,
+    encode2
+  )}</${type}>`;
+};
+var generateTagsAsString = (type, tags, encode2 = true) => tags.reduce((str, t2) => {
+  const tag = t2;
+  const attributeHtml = Object.keys(tag).filter(
+    (attribute) => !(attribute === "innerHTML" || attribute === "cssText")
+  ).reduce((string, attribute) => {
+    const attr = typeof tag[attribute] === "undefined" ? attribute : `${attribute}="${encodeSpecialCharacters(tag[attribute], encode2)}"`;
+    return string ? `${string} ${attr}` : attr;
+  }, "");
+  const tagContent = tag.innerHTML || tag.cssText || "";
+  const isSelfClosing = SELF_CLOSING_TAGS.indexOf(type) === -1;
+  return `${str}<${type} ${HELMET_ATTRIBUTE}="true" ${attributeHtml}${isSelfClosing ? `/>` : `>${tagContent}</${type}>`}`;
+}, "");
+var convertElementAttributesToReactProps = (attributes, initProps = {}) => Object.keys(attributes).reduce((obj, key) => {
+  const mapped = REACT_TAG_MAP[key];
+  obj[mapped || key] = attributes[key];
+  return obj;
+}, initProps);
+var generateTitleAsReactComponent = (_type, title, attributes) => {
+  const initProps = {
+    key: title,
+    [HELMET_ATTRIBUTE]: true
+  };
+  const props = convertElementAttributesToReactProps(attributes, initProps);
+  return [t__default.createElement("title", props, title)];
+};
+var generateTagsAsReactComponent = (type, tags) => tags.map((tag, i) => {
+  const mappedTag = {
+    key: i,
+    [HELMET_ATTRIBUTE]: true
+  };
+  Object.keys(tag).forEach((attribute) => {
+    const mapped = REACT_TAG_MAP[attribute];
+    const mappedAttribute = mapped || attribute;
+    if (mappedAttribute === "innerHTML" || mappedAttribute === "cssText") {
+      const content = tag.innerHTML || tag.cssText;
+      mappedTag.dangerouslySetInnerHTML = { __html: content };
+    } else {
+      mappedTag[mappedAttribute] = tag[attribute];
+    }
+  });
+  return t__default.createElement(type, mappedTag);
+});
+var getMethodsForTag = (type, tags, encode2 = true) => {
+  switch (type) {
+    case "title":
+      return {
+        toComponent: () => generateTitleAsReactComponent(type, tags.title, tags.titleAttributes),
+        toString: () => generateTitleAsString(type, tags.title, tags.titleAttributes, encode2)
+      };
+    case "bodyAttributes":
+    case "htmlAttributes":
+      return {
+        toComponent: () => convertElementAttributesToReactProps(tags),
+        toString: () => generateElementAttributesAsString(tags)
+      };
+    default:
+      return {
+        toComponent: () => generateTagsAsReactComponent(type, tags),
+        toString: () => generateTagsAsString(type, tags, encode2)
+      };
+  }
+};
+var getPriorityMethods = ({ metaTags, linkTags, scriptTags, encode: encode2 }) => {
+  const meta = prioritizer(metaTags, SEO_PRIORITY_TAGS.meta);
+  const link = prioritizer(linkTags, SEO_PRIORITY_TAGS.link);
+  const script = prioritizer(scriptTags, SEO_PRIORITY_TAGS.script);
+  const priorityMethods = {
+    toComponent: () => [
+      ...generateTagsAsReactComponent("meta", meta.priority),
+      ...generateTagsAsReactComponent("link", link.priority),
+      ...generateTagsAsReactComponent("script", script.priority)
+    ],
+    toString: () => (
+      // generate all the tags as strings and concatenate them
+      `${getMethodsForTag("meta", meta.priority, encode2)} ${getMethodsForTag(
+        "link",
+        link.priority,
+        encode2
+      )} ${getMethodsForTag("script", script.priority, encode2)}`
+    )
+  };
+  return {
+    priorityMethods,
+    metaTags: meta.default,
+    linkTags: link.default,
+    scriptTags: script.default
+  };
+};
+var mapStateOnServer = (props) => {
+  const {
+    baseTag,
+    bodyAttributes,
+    encode: encode2 = true,
+    htmlAttributes,
+    noscriptTags,
+    styleTags,
+    title = "",
+    titleAttributes,
+    prioritizeSeoTags
+  } = props;
+  let { linkTags, metaTags, scriptTags } = props;
+  let priorityMethods = {
+    toComponent: () => {
+    },
+    toString: () => ""
+  };
+  if (prioritizeSeoTags) {
+    ({ priorityMethods, linkTags, metaTags, scriptTags } = getPriorityMethods(props));
+  }
+  return {
+    priority: priorityMethods,
+    base: getMethodsForTag("base", baseTag, encode2),
+    bodyAttributes: getMethodsForTag("bodyAttributes", bodyAttributes, encode2),
+    htmlAttributes: getMethodsForTag("htmlAttributes", htmlAttributes, encode2),
+    link: getMethodsForTag("link", linkTags, encode2),
+    meta: getMethodsForTag("meta", metaTags, encode2),
+    noscript: getMethodsForTag("noscript", noscriptTags, encode2),
+    script: getMethodsForTag("script", scriptTags, encode2),
+    style: getMethodsForTag("style", styleTags, encode2),
+    title: getMethodsForTag("title", { title, titleAttributes }, encode2)
+  };
+};
+var server_default = mapStateOnServer;
+var instances = [];
+var isDocument = !!(typeof window !== "undefined" && window.document && window.document.createElement);
+var HelmetData = class {
+  constructor(context, canUseDOM) {
+    __publicField(this, "instances", []);
+    __publicField(this, "canUseDOM", isDocument);
+    __publicField(this, "context");
+    __publicField(this, "value", {
+      setHelmet: (serverState) => {
+        this.context.helmet = serverState;
+      },
+      helmetInstances: {
+        get: () => this.canUseDOM ? instances : this.instances,
+        add: (instance) => {
+          (this.canUseDOM ? instances : this.instances).push(instance);
+        },
+        remove: (instance) => {
+          const index = (this.canUseDOM ? instances : this.instances).indexOf(instance);
+          (this.canUseDOM ? instances : this.instances).splice(index, 1);
+        }
+      }
+    });
+    this.context = context;
+    this.canUseDOM = canUseDOM || false;
+    if (!canUseDOM) {
+      context.helmet = server_default({
+        baseTag: [],
+        bodyAttributes: {},
+        htmlAttributes: {},
+        linkTags: [],
+        metaTags: [],
+        noscriptTags: [],
+        scriptTags: [],
+        styleTags: [],
+        title: "",
+        titleAttributes: {}
+      });
+    }
+  }
+};
+var defaultValue = {};
+var Context = t__default.createContext(defaultValue);
+var HelmetProvider = (_a = class extends Component {
+  constructor(props) {
+    super(props);
+    __publicField(this, "helmetData");
+    this.helmetData = new HelmetData(this.props.context || {}, _a.canUseDOM);
+  }
+  render() {
+    return /* @__PURE__ */ t__default.createElement(Context.Provider, { value: this.helmetData.value }, this.props.children);
+  }
+}, __publicField(_a, "canUseDOM", isDocument), _a);
+var updateTags = (type, tags) => {
+  const headElement = document.head || document.querySelector(
+    "head"
+    /* HEAD */
+  );
+  const tagNodes = headElement.querySelectorAll(`${type}[${HELMET_ATTRIBUTE}]`);
+  const oldTags = [].slice.call(tagNodes);
+  const newTags = [];
+  let indexToDelete;
+  if (tags && tags.length) {
+    tags.forEach((tag) => {
+      const newElement = document.createElement(type);
+      for (const attribute in tag) {
+        if (Object.prototype.hasOwnProperty.call(tag, attribute)) {
+          if (attribute === "innerHTML") {
+            newElement.innerHTML = tag.innerHTML;
+          } else if (attribute === "cssText") {
+            if (newElement.styleSheet) {
+              newElement.styleSheet.cssText = tag.cssText;
+            } else {
+              newElement.appendChild(document.createTextNode(tag.cssText));
+            }
+          } else {
+            const attr = attribute;
+            const value = typeof tag[attr] === "undefined" ? "" : tag[attr];
+            newElement.setAttribute(attribute, value);
+          }
+        }
+      }
+      newElement.setAttribute(HELMET_ATTRIBUTE, "true");
+      if (oldTags.some((existingTag, index) => {
+        indexToDelete = index;
+        return newElement.isEqualNode(existingTag);
+      })) {
+        oldTags.splice(indexToDelete, 1);
+      } else {
+        newTags.push(newElement);
+      }
+    });
+  }
+  oldTags.forEach((tag) => {
+    var _a2;
+    return (_a2 = tag.parentNode) == null ? void 0 : _a2.removeChild(tag);
+  });
+  newTags.forEach((tag) => headElement.appendChild(tag));
+  return {
+    oldTags,
+    newTags
+  };
+};
+var updateAttributes = (tagName, attributes) => {
+  const elementTag = document.getElementsByTagName(tagName)[0];
+  if (!elementTag) {
+    return;
+  }
+  const helmetAttributeString = elementTag.getAttribute(HELMET_ATTRIBUTE);
+  const helmetAttributes = helmetAttributeString ? helmetAttributeString.split(",") : [];
+  const attributesToRemove = [...helmetAttributes];
+  const attributeKeys = Object.keys(attributes);
+  for (const attribute of attributeKeys) {
+    const value = attributes[attribute] || "";
+    if (elementTag.getAttribute(attribute) !== value) {
+      elementTag.setAttribute(attribute, value);
+    }
+    if (helmetAttributes.indexOf(attribute) === -1) {
+      helmetAttributes.push(attribute);
+    }
+    const indexToSave = attributesToRemove.indexOf(attribute);
+    if (indexToSave !== -1) {
+      attributesToRemove.splice(indexToSave, 1);
+    }
+  }
+  for (let i = attributesToRemove.length - 1; i >= 0; i -= 1) {
+    elementTag.removeAttribute(attributesToRemove[i]);
+  }
+  if (helmetAttributes.length === attributesToRemove.length) {
+    elementTag.removeAttribute(HELMET_ATTRIBUTE);
+  } else if (elementTag.getAttribute(HELMET_ATTRIBUTE) !== attributeKeys.join(",")) {
+    elementTag.setAttribute(HELMET_ATTRIBUTE, attributeKeys.join(","));
+  }
+};
+var updateTitle = (title, attributes) => {
+  if (typeof title !== "undefined" && document.title !== title) {
+    document.title = flattenArray(title);
+  }
+  updateAttributes("title", attributes);
+};
+var commitTagChanges = (newState, cb) => {
+  const {
+    baseTag,
+    bodyAttributes,
+    htmlAttributes,
+    linkTags,
+    metaTags,
+    noscriptTags,
+    onChangeClientState,
+    scriptTags,
+    styleTags,
+    title,
+    titleAttributes
+  } = newState;
+  updateAttributes("body", bodyAttributes);
+  updateAttributes("html", htmlAttributes);
+  updateTitle(title, titleAttributes);
+  const tagUpdates = {
+    baseTag: updateTags("base", baseTag),
+    linkTags: updateTags("link", linkTags),
+    metaTags: updateTags("meta", metaTags),
+    noscriptTags: updateTags("noscript", noscriptTags),
+    scriptTags: updateTags("script", scriptTags),
+    styleTags: updateTags("style", styleTags)
+  };
+  const addedTags = {};
+  const removedTags = {};
+  Object.keys(tagUpdates).forEach((tagType) => {
+    const { newTags, oldTags } = tagUpdates[tagType];
+    if (newTags.length) {
+      addedTags[tagType] = newTags;
+    }
+    if (oldTags.length) {
+      removedTags[tagType] = tagUpdates[tagType].oldTags;
+    }
+  });
+  if (cb) {
+    cb();
+  }
+  onChangeClientState(newState, addedTags, removedTags);
+};
+var _helmetCallback = null;
+var handleStateChangeOnClient = (newState) => {
+  if (_helmetCallback) {
+    cancelAnimationFrame(_helmetCallback);
+  }
+  if (newState.defer) {
+    _helmetCallback = requestAnimationFrame(() => {
+      commitTagChanges(newState, () => {
+        _helmetCallback = null;
+      });
+    });
+  } else {
+    commitTagChanges(newState);
+    _helmetCallback = null;
+  }
+};
+var client_default = handleStateChangeOnClient;
+var HelmetDispatcher = class extends Component {
+  constructor() {
+    super(...arguments);
+    __publicField(this, "rendered", false);
+  }
+  shouldComponentUpdate(nextProps) {
+    return !shallowEqual(nextProps, this.props);
+  }
+  componentDidUpdate() {
+    this.emitChange();
+  }
+  componentWillUnmount() {
+    const { helmetInstances } = this.props.context;
+    helmetInstances.remove(this);
+    this.emitChange();
+  }
+  emitChange() {
+    const { helmetInstances, setHelmet } = this.props.context;
+    let serverState = null;
+    const state = reducePropsToState(
+      helmetInstances.get().map((instance) => {
+        const props = { ...instance.props };
+        delete props.context;
+        return props;
+      })
+    );
+    if (HelmetProvider.canUseDOM) {
+      client_default(state);
+    } else if (server_default) {
+      serverState = server_default(state);
+    }
+    setHelmet(serverState);
+  }
+  // componentWillMount will be deprecated
+  // for SSR, initialize on first render
+  // constructor is also unsafe in StrictMode
+  init() {
+    if (this.rendered) {
+      return;
+    }
+    this.rendered = true;
+    const { helmetInstances } = this.props.context;
+    helmetInstances.add(this);
+    this.emitChange();
+  }
+  render() {
+    this.init();
+    return null;
+  }
+};
+var Helmet = (_b = class extends Component {
+  shouldComponentUpdate(nextProps) {
+    return !fastCompare(without(this.props, "helmetData"), without(nextProps, "helmetData"));
+  }
+  mapNestedChildrenToProps(child, nestedChildren) {
+    if (!nestedChildren) {
+      return null;
+    }
+    switch (child.type) {
+      case "script":
+      case "noscript":
+        return {
+          innerHTML: nestedChildren
+        };
+      case "style":
+        return {
+          cssText: nestedChildren
+        };
+      default:
+        throw new Error(
+          `<${child.type} /> elements are self-closing and can not contain children. Refer to our API for more information.`
+        );
+    }
+  }
+  flattenArrayTypeChildren(child, arrayTypeChildren, newChildProps, nestedChildren) {
+    return {
+      ...arrayTypeChildren,
+      [child.type]: [
+        ...arrayTypeChildren[child.type] || [],
+        {
+          ...newChildProps,
+          ...this.mapNestedChildrenToProps(child, nestedChildren)
+        }
+      ]
+    };
+  }
+  mapObjectTypeChildren(child, newProps, newChildProps, nestedChildren) {
+    switch (child.type) {
+      case "title":
+        return {
+          ...newProps,
+          [child.type]: nestedChildren,
+          titleAttributes: { ...newChildProps }
+        };
+      case "body":
+        return {
+          ...newProps,
+          bodyAttributes: { ...newChildProps }
+        };
+      case "html":
+        return {
+          ...newProps,
+          htmlAttributes: { ...newChildProps }
+        };
+      default:
+        return {
+          ...newProps,
+          [child.type]: { ...newChildProps }
+        };
+    }
+  }
+  mapArrayTypeChildrenToProps(arrayTypeChildren, newProps) {
+    let newFlattenedProps = { ...newProps };
+    Object.keys(arrayTypeChildren).forEach((arrayChildName) => {
+      newFlattenedProps = {
+        ...newFlattenedProps,
+        [arrayChildName]: arrayTypeChildren[arrayChildName]
+      };
+    });
+    return newFlattenedProps;
+  }
+  warnOnInvalidChildren(child, nestedChildren) {
+    invariant(
+      VALID_TAG_NAMES.some((name) => child.type === name),
+      typeof child.type === "function" ? `You may be attempting to nest <Helmet> components within each other, which is not allowed. Refer to our API for more information.` : `Only elements types ${VALID_TAG_NAMES.join(
+        ", "
+      )} are allowed. Helmet does not support rendering <${child.type}> elements. Refer to our API for more information.`
+    );
+    invariant(
+      !nestedChildren || typeof nestedChildren === "string" || Array.isArray(nestedChildren) && !nestedChildren.some((nestedChild) => typeof nestedChild !== "string"),
+      `Helmet expects a string as a child of <${child.type}>. Did you forget to wrap your children in braces? ( <${child.type}>{\`\`}</${child.type}> ) Refer to our API for more information.`
+    );
+    return true;
+  }
+  mapChildrenToProps(children, newProps) {
+    let arrayTypeChildren = {};
+    t__default.Children.forEach(children, (child) => {
+      if (!child || !child.props) {
+        return;
+      }
+      const { children: nestedChildren, ...childProps } = child.props;
+      const newChildProps = Object.keys(childProps).reduce((obj, key) => {
+        obj[HTML_TAG_MAP[key] || key] = childProps[key];
+        return obj;
+      }, {});
+      let { type } = child;
+      if (typeof type === "symbol") {
+        type = type.toString();
+      } else {
+        this.warnOnInvalidChildren(child, nestedChildren);
+      }
+      switch (type) {
+        case "Symbol(react.fragment)":
+          newProps = this.mapChildrenToProps(nestedChildren, newProps);
+          break;
+        case "link":
+        case "meta":
+        case "noscript":
+        case "script":
+        case "style":
+          arrayTypeChildren = this.flattenArrayTypeChildren(
+            child,
+            arrayTypeChildren,
+            newChildProps,
+            nestedChildren
+          );
+          break;
+        default:
+          newProps = this.mapObjectTypeChildren(child, newProps, newChildProps, nestedChildren);
+          break;
+      }
+    });
+    return this.mapArrayTypeChildrenToProps(arrayTypeChildren, newProps);
+  }
+  render() {
+    const { children, ...props } = this.props;
+    let newProps = { ...props };
+    let { helmetData } = props;
+    if (children) {
+      newProps = this.mapChildrenToProps(children, newProps);
+    }
+    if (helmetData && !(helmetData instanceof HelmetData)) {
+      const data = helmetData;
+      helmetData = new HelmetData(data.context, true);
+      delete newProps.helmetData;
+    }
+    return helmetData ? /* @__PURE__ */ t__default.createElement(HelmetDispatcher, { ...newProps, context: helmetData.value }) : /* @__PURE__ */ t__default.createElement(Context.Consumer, null, (context) => /* @__PURE__ */ t__default.createElement(HelmetDispatcher, { ...newProps, context }));
+  }
+}, __publicField(_b, "defaultProps", {
+  defer: true,
+  encodeSpecialCharacters: true,
+  prioritizeSeoTags: false
+}), _b);
+const OwnerBenefitsPage = () => {
+  const { user } = useContext(UserContext);
+  return /* @__PURE__ */ jsxs("div", { className: "min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-gray-100", children: [
+    /* @__PURE__ */ jsxs(Helmet, { children: [
+      /* @__PURE__ */ jsx("title", { children: "Devenez propriétaire sur AtypikBookings | Louez votre bien" }),
+      /* @__PURE__ */ jsx(
+        "meta",
+        {
+          name: "description",
+          content: "Générez des revenus en louant votre logement atypique sur AtypikBookings. Grande visibilité, paiements sécurisés et assistance 24/7."
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        "meta",
+        {
+          name: "keywords",
+          content: "location saisonnière, hébergement atypique, louer bien immobilier, propriétaires, Airbnb alternatif"
+        }
+      ),
+      /* @__PURE__ */ jsx("meta", { name: "robots", content: "index, follow" }),
+      /* @__PURE__ */ jsx("link", { rel: "canonical", href: "https://atypikbookings.com/OwnerBenefits" })
+    ] }),
+    /* @__PURE__ */ jsxs("header", { className: "text-center", children: [
+      /* @__PURE__ */ jsx("h1", { className: "text-4xl font-bold text-gray-800 mb-4", children: "🎉 Devenez propriétaire sur AtypikBookings" }),
+      /* @__PURE__ */ jsx("p", { className: "text-lg text-gray-600 max-w-2xl", children: "Rentabilisez votre hébergement atypique en le louant sur AtypikBookings. Cabanes, yourtes, igloos, maisons flottantes... Notre plateforme vous permet de trouver des locataires en toute simplicité et sécurité." })
+    ] }),
+    /* @__PURE__ */ jsxs("section", { className: "mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl", children: [
+      /* @__PURE__ */ jsxs("article", { className: "p-6 border rounded-lg shadow-lg bg-white", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-3", children: "📈 Augmentez vos revenus" }),
+        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Publiez votre bien et commencez à percevoir des revenus en accueillant des voyageurs du monde entier." })
+      ] }),
+      /* @__PURE__ */ jsxs("article", { className: "p-6 border rounded-lg shadow-lg bg-white", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-3", children: "🔍 Grande visibilité" }),
+        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Votre logement sera mis en avant auprès de milliers d'utilisateurs chaque mois." })
+      ] }),
+      /* @__PURE__ */ jsxs("article", { className: "p-6 border rounded-lg shadow-lg bg-white", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-3", children: "💰 Paiements sécurisés" }),
+        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Recevez vos paiements rapidement et en toute sécurité grâce à notre système intégré." })
+      ] }),
+      /* @__PURE__ */ jsxs("article", { className: "p-6 border rounded-lg shadow-lg bg-white", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-3", children: "📞 Assistance 24/7" }),
+        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Une équipe dédiée est disponible à tout moment pour vous accompagner et répondre à vos questions." })
+      ] })
+    ] }),
+    !user && /* @__PURE__ */ jsxs("div", { className: "mt-10 text-center text-red-500", children: [
+      "Connectez-vous pour publier un logement. ",
+      /* @__PURE__ */ jsx("br", {}),
+      /* @__PURE__ */ jsx(Link, { to: "/login", className: "underline text-primary", children: "Se connecter" })
+    ] }),
+    user && /* @__PURE__ */ jsx("div", { className: "mt-8", children: /* @__PURE__ */ jsx(
+      Link,
+      {
+        to: "/account/places/new",
+        className: "bg-primary text-white px-6 py-3 rounded-full shadow-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 hover:bg-primary-dark transition",
+        "aria-label": "Ajouter un logement",
+        children: "➕ Ajouter un logement"
+      }
+    ) })
   ] });
 };
 const AccountNav = () => {
@@ -4426,7 +5270,7 @@ const PlacesPage = () => {
     return /* @__PURE__ */ jsx(Spinner, {});
   }
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "Mes lieux - AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -4750,7 +5594,7 @@ const ProfilePage = () => {
     return /* @__PURE__ */ jsx(Navigate, { to: redirect });
   }
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "Profil - AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -4848,7 +5692,7 @@ const LoginPage = () => {
     return /* @__PURE__ */ jsx(ProfilePage, {});
   }
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "Connexion - AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -5016,7 +5860,7 @@ const BookingsPage = () => {
   }, []);
   if (loading) return /* @__PURE__ */ jsx(Spinner, {});
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "Mes Réservations - AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -5040,7 +5884,7 @@ const BookingsPage = () => {
     /* @__PURE__ */ jsxs("div", { className: "flex flex-col items-center", children: [
       /* @__PURE__ */ jsx(AccountNav, {}),
       /* @__PURE__ */ jsx("div", { className: "w-full px-4", children: (bookings == null ? void 0 : bookings.length) > 0 ? bookings.map((booking) => {
-        var _a2, _b;
+        var _a2, _b2;
         return /* @__PURE__ */ jsxs(
           Link,
           {
@@ -5055,7 +5899,7 @@ const BookingsPage = () => {
                 }
               ) }),
               /* @__PURE__ */ jsxs("div", { className: "grow py-3 pr-3", children: [
-                /* @__PURE__ */ jsx("h2", { className: "md:text-2xl", children: (_b = booking == null ? void 0 : booking.place) == null ? void 0 : _b.title }),
+                /* @__PURE__ */ jsx("h2", { className: "md:text-2xl", children: (_b2 = booking == null ? void 0 : booking.place) == null ? void 0 : _b2.title }),
                 /* @__PURE__ */ jsxs("div", { className: "md:text-xl", children: [
                   /* @__PURE__ */ jsx(
                     BookingDates,
@@ -5583,7 +6427,7 @@ const PlacesFormPage = () => {
     return /* @__PURE__ */ jsx(Spinner, {});
   }
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsxs("title", { children: [
         id ? "Modifier le lieu" : "Ajouter un nouveau lieu",
         " - AtypikHouse"
@@ -5995,7 +6839,7 @@ const BookingWidget = ({ place }) => {
   ] });
 };
 const PlaceGallery = ({ place }) => {
-  var _a2, _b, _c, _d, _e, _f, _g;
+  var _a2, _b2, _c, _d, _e, _f, _g;
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   if (showAllPhotos) {
     return /* @__PURE__ */ jsx("div", { className: "fixed inset-0 z-20 overflow-auto bg-white text-white", children: /* @__PURE__ */ jsxs("div", { className: "grid gap-4 bg-white px-2 py-20 md:p-8", children: [
@@ -6031,7 +6875,7 @@ const PlaceGallery = ({ place }) => {
   }
   return /* @__PURE__ */ jsxs("div", { className: "relative", children: [
     /* @__PURE__ */ jsxs("div", { className: "hidden h-[400px] max-h-[450px] grid-cols-4 gap-2 overflow-hidden rounded-[12px] md:grid", children: [
-      /* @__PURE__ */ jsx("div", { className: "col-span-2 overflow-hidden", children: ((_b = place.photos) == null ? void 0 : _b[0]) && /* @__PURE__ */ jsx("div", { className: "h-full w-full overflow-hidden bg-red-200", children: /* @__PURE__ */ jsx(
+      /* @__PURE__ */ jsx("div", { className: "col-span-2 overflow-hidden", children: ((_b2 = place.photos) == null ? void 0 : _b2[0]) && /* @__PURE__ */ jsx("div", { className: "h-full w-full overflow-hidden bg-red-200", children: /* @__PURE__ */ jsx(
         "img",
         {
           onClick: () => setShowAllPhotos(true),
@@ -6343,7 +7187,7 @@ function PlacePage() {
   if (loading) return /* @__PURE__ */ jsx(Spinner, {});
   if (!place) return null;
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsxs("title", { children: [
         place.title,
         " - AtypikHouse"
@@ -6390,7 +7234,7 @@ function PlacePage() {
       /* @__PURE__ */ jsxs("section", { className: "mt-8", children: [
         /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold", children: "Avis" }),
         /* @__PURE__ */ jsx("div", { className: "mt-4", children: ((_a2 = place.reviews) == null ? void 0 : _a2.length) ? place.reviews.map((review) => {
-          var _a3, _b;
+          var _a3, _b2;
           return /* @__PURE__ */ jsxs("div", { className: "mb-4 rounded border p-4", children: [
             /* @__PURE__ */ jsxs("div", { className: "flex items-center", children: [
               /* @__PURE__ */ jsx("span", { className: "font-semibold", children: ((_a3 = review.user) == null ? void 0 : _a3.name) || userName }),
@@ -6401,7 +7245,7 @@ function PlacePage() {
               ] })
             ] }),
             /* @__PURE__ */ jsx("p", { children: review.comment }),
-            (_b = review.replies) == null ? void 0 : _b.map((rep) => {
+            (_b2 = review.replies) == null ? void 0 : _b2.map((rep) => {
               var _a4;
               return /* @__PURE__ */ jsxs("div", { className: "mt-4 ml-4 border-l-2 pl-4", children: [
                 /* @__PURE__ */ jsx("span", { className: "font-semibold", children: (_a4 = rep.user) == null ? void 0 : _a4.name }),
@@ -6500,7 +7344,7 @@ function PlacePage() {
   ] });
 }
 const SingleBookedPlace = () => {
-  var _a2, _b, _c;
+  var _a2, _b2, _c;
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -6525,7 +7369,7 @@ const SingleBookedPlace = () => {
     return /* @__PURE__ */ jsx(Spinner, {});
   }
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsxs("title", { children: [
         ((_a2 = booking == null ? void 0 : booking.place) == null ? void 0 : _a2.title) ? `Réservation - ${booking.place.title}` : "Détails de la réservation",
         " - AtypikHouse"
@@ -6534,7 +7378,7 @@ const SingleBookedPlace = () => {
         "meta",
         {
           name: "description",
-          content: `Consultez les détails de votre réservation pour ${((_b = booking == null ? void 0 : booking.place) == null ? void 0 : _b.title) || "un lieu unique"}.`
+          content: `Consultez les détails de votre réservation pour ${((_b2 = booking == null ? void 0 : booking.place) == null ? void 0 : _b2.title) || "un lieu unique"}.`
         }
       ),
       /* @__PURE__ */ jsx("meta", { name: "robots", content: "index, follow" }),
@@ -6583,7 +7427,7 @@ const SingleBookedPlace = () => {
 };
 const NotFoundPage = () => {
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "404 - Page non trouvée | AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -6627,51 +7471,67 @@ const NotFoundPage = () => {
     ] }) })
   ] });
 };
-const OwnerBenefitsPage = () => {
+const LegalPage = () => {
   return /* @__PURE__ */ jsxs("div", { className: "min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-gray-100", children: [
     /* @__PURE__ */ jsxs(Helmet, { children: [
-      /* @__PURE__ */ jsx("title", { children: "Devenez propriétaire sur AtypikBookings | Louez votre bien" }),
-      /* @__PURE__ */ jsx("meta", { name: "description", content: "Générez des revenus en louant votre logement atypique sur AtypikBookings. Grande visibilité, paiements sécurisés et assistance 24/7." }),
-      /* @__PURE__ */ jsx("meta", { name: "keywords", content: "location saisonnière, hébergement atypique, louer bien immobilier, propriétaires, Airbnb alternatif" }),
-      /* @__PURE__ */ jsx("meta", { name: "robots", content: "index, follow" }),
-      /* @__PURE__ */ jsx("link", { rel: "canonical", href: "https://atypikbookings.com/owner-benefits" })
+      /* @__PURE__ */ jsx("title", { children: "Mentions légales & Politique de confidentialité | AtypikBookings" }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: "Mentions légales, conditions générales d'utilisation et politique de confidentialité d'AtypikBookings." }),
+      /* @__PURE__ */ jsx("link", { rel: "canonical", href: "https://atypikbookings.com/legal" })
     ] }),
-    /* @__PURE__ */ jsxs("header", { className: "text-center", children: [
-      /* @__PURE__ */ jsx("h1", { className: "text-4xl font-bold text-gray-800 mb-4", children: "🎉 Devenez propriétaire sur AtypikBookings" }),
-      /* @__PURE__ */ jsx("p", { className: "text-lg text-gray-600 max-w-2xl", children: "Rentabilisez votre hébergement atypique en le louant sur AtypikBookings. Cabanes, yourtes, igloos, maisons flottantes... Notre plateforme vous permet de trouver des locataires en toute simplicité et sécurité." })
+    /* @__PURE__ */ jsxs("div", { className: "text-center mb-12", children: [
+      /* @__PURE__ */ jsx("h1", { className: "text-4xl sm:text-5xl font-bold text-primary mb-4", children: "Mentions légales & Confidentialité" }),
+      /* @__PURE__ */ jsx("p", { className: "text-gray-600 text-lg max-w-2xl mx-auto", children: "Transparence, sécurité et confiance : tout ce que vous devez savoir sur l'utilisation de notre plateforme." })
     ] }),
-    /* @__PURE__ */ jsxs("section", { className: "mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl", children: [
-      /* @__PURE__ */ jsxs("article", { className: "p-6 border rounded-lg shadow-lg bg-white", children: [
-        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-3", children: "📈 Augmentez vos revenus" }),
-        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Publiez votre bien et commencez à percevoir des revenus en accueillant des voyageurs du monde entier." })
+    /* @__PURE__ */ jsxs("div", { className: "grid gap-8 max-w-5xl mx-auto", children: [
+      /* @__PURE__ */ jsxs("section", { className: "bg-white shadow-lg rounded-xl p-6", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold text-gray-800 mb-3", children: "1. Éditeur du site" }),
+        /* @__PURE__ */ jsxs("p", { className: "text-gray-600", children: [
+          "Ce site est édité par la société ",
+          /* @__PURE__ */ jsx("strong", { children: "AtypikBookings" }),
+          ", SARL au capital de 5 000 €, immatriculée au RCS de Paris sous le numéro 123 456 789."
+        ] }),
+        /* @__PURE__ */ jsx("p", { className: "text-gray-600 mt-2", children: "Adresse : 123 rue de l'Aventure, 75000 Paris" }),
+        /* @__PURE__ */ jsxs("p", { className: "text-gray-600", children: [
+          "Email : ",
+          /* @__PURE__ */ jsx("a", { href: "mailto:contact@atypikbookings.com", className: "text-primary underline", children: "contact@atypikbookings.com" })
+        ] })
       ] }),
-      /* @__PURE__ */ jsxs("article", { className: "p-6 border rounded-lg shadow-lg bg-white", children: [
-        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-3", children: "🔍 Grande visibilité" }),
-        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Votre logement sera mis en avant auprès de milliers d'utilisateurs chaque mois." })
+      /* @__PURE__ */ jsxs("section", { className: "bg-white shadow-lg rounded-xl p-6", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold text-gray-800 mb-3", children: "2. Hébergeur" }),
+        /* @__PURE__ */ jsxs("p", { className: "text-gray-600", children: [
+          "Le site est hébergé par ",
+          /* @__PURE__ */ jsx("strong", { children: "Vercel, Inc." }),
+          /* @__PURE__ */ jsx("br", {}),
+          "Adresse : 340 S Lemon Ave #4133, Walnut, CA 91789, USA"
+        ] })
       ] }),
-      /* @__PURE__ */ jsxs("article", { className: "p-6 border rounded-lg shadow-lg bg-white", children: [
-        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-3", children: "💰 Paiements sécurisés" }),
-        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Recevez vos paiements rapidement et en toute sécurité grâce à notre système intégré." })
+      /* @__PURE__ */ jsxs("section", { className: "bg-white shadow-lg rounded-xl p-6", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold text-gray-800 mb-3", children: "3. Conditions Générales d’Utilisation (CGU)" }),
+        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "L’utilisation du site AtypikBookings implique l’acceptation pleine et entière des conditions générales d’utilisation. Ces dernières peuvent être modifiées à tout moment." })
       ] }),
-      /* @__PURE__ */ jsxs("article", { className: "p-6 border rounded-lg shadow-lg bg-white", children: [
-        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold mb-3", children: "📞 Assistance 24/7" }),
-        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Une équipe dédiée est disponible à tout moment pour vous accompagner et répondre à vos questions." })
+      /* @__PURE__ */ jsxs("section", { className: "bg-white shadow-lg rounded-xl p-6", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold text-gray-800 mb-3", children: "4. Propriété intellectuelle" }),
+        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Tous les éléments du site (textes, images, logos, etc.) sont la propriété exclusive d’AtypikBookings, sauf indication contraire." })
+      ] }),
+      /* @__PURE__ */ jsxs("section", { className: "bg-white shadow-lg rounded-xl p-6", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-2xl font-semibold text-gray-800 mb-3", children: "5. Politique de confidentialité" }),
+        /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Les données personnelles collectées via le site sont utilisées uniquement pour améliorer l’expérience utilisateur. Elles sont traitées dans le respect du RGPD." }),
+        /* @__PURE__ */ jsxs("p", { className: "text-gray-600 mt-2", children: [
+          "Vous disposez d’un droit d’accès, de rectification ou de suppression de vos données. Contactez-nous à : ",
+          /* @__PURE__ */ jsx("a", { href: "mailto:contact@atypikbookings.com", className: "text-primary underline", children: "contact@atypikbookings.com" })
+        ] })
       ] })
     ] }),
-    /* @__PURE__ */ jsx("div", { className: "mt-8", children: /* @__PURE__ */ jsx(
-      Link,
-      {
-        to: "/register",
-        className: "bg-primary text-white px-6 py-3 rounded-full shadow-lg text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 hover:bg-primary-dark transition",
-        "aria-label": "S'inscrire pour devenir propriétaire",
-        children: "🚀 Je deviens hôte dès maintenant"
-      }
-    ) })
+    /* @__PURE__ */ jsxs("footer", { className: "text-sm text-gray-500 text-center mt-16", children: [
+      "© ",
+      (/* @__PURE__ */ new Date()).getFullYear(),
+      " AtypikBookings. Tous droits réservés."
+    ] })
   ] });
 };
 const AdminDashboard = () => {
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "Tableau de Bord Administrateur - AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -6874,7 +7734,7 @@ const AdminUsers = () => {
     (user) => user.name.toLowerCase().includes(searchTerm.toLowerCase()) && (roleFilter ? user.role === roleFilter : true)
   );
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "Gestion des Utilisateurs - AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -7143,7 +8003,7 @@ const AdminProperties = () => {
     }).catch((error) => console.error("Erreur lors de la suppression :", error));
   };
   return /* @__PURE__ */ jsxs(Fragment, { children: [
-    /* @__PURE__ */ jsxs(Helmet, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "Gestion des Propriétés - AtypikHouse" }),
       /* @__PURE__ */ jsx(
         "meta",
@@ -7319,7 +8179,7 @@ const AdminComments = () => {
   return /* @__PURE__ */ jsxs("div", { className: "mt-4 px-8 pt-20", children: [
     /* @__PURE__ */ jsx("h1", { className: "text-3xl font-semibold", children: "Modération des Commentaires" }),
     /* @__PURE__ */ jsx("div", { className: "mt-8", children: comments.length > 0 ? comments.map((comment) => {
-      var _a2, _b;
+      var _a2, _b2;
       return /* @__PURE__ */ jsxs("div", { className: "mb-4 p-4 border rounded", children: [
         /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
           /* @__PURE__ */ jsxs("div", { children: [
@@ -7340,7 +8200,7 @@ const AdminComments = () => {
           )
         ] }),
         /* @__PURE__ */ jsx("p", { className: "mt-2", children: comment.comment }),
-        ((_b = comment.replies) == null ? void 0 : _b.length) > 0 && /* @__PURE__ */ jsx("div", { className: "mt-4 ml-4 border-l-2 pl-4", children: comment.replies.map((reply) => {
+        ((_b2 = comment.replies) == null ? void 0 : _b2.length) > 0 && /* @__PURE__ */ jsx("div", { className: "mt-4 ml-4 border-l-2 pl-4", children: comment.replies.map((reply) => {
           var _a3;
           return /* @__PURE__ */ jsxs("div", { className: "mb-2 flex justify-between", children: [
             /* @__PURE__ */ jsxs("div", { children: [
@@ -7393,13 +8253,14 @@ function App({ initialPlaces = [], initialUser = null, initialBookings = [], ini
       /* @__PURE__ */ jsx(Route, { index: true, element: /* @__PURE__ */ jsx(IndexPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/login", element: /* @__PURE__ */ jsx(LoginPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/register", element: /* @__PURE__ */ jsx(RegisterPage, {}) }),
-      /* @__PURE__ */ jsx(Route, { path: "/owner-benefits", element: /* @__PURE__ */ jsx(OwnerBenefitsPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/account", element: /* @__PURE__ */ jsx(ProfilePage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/account/places", element: /* @__PURE__ */ jsx(PlacesPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/account/places/new", element: /* @__PURE__ */ jsx(PlacesFormPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/account/places/:id", element: /* @__PURE__ */ jsx(PlacesFormPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/place/:id", element: /* @__PURE__ */ jsx(PlacePage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/account/bookings", element: /* @__PURE__ */ jsx(BookingsPage, {}) }),
+      /* @__PURE__ */ jsx(Route, { path: "/OwnerBenefitsPage", element: /* @__PURE__ */ jsx(OwnerBenefitsPage, {}) }),
+      /* @__PURE__ */ jsx(Route, { path: "/legal", element: /* @__PURE__ */ jsx(LegalPage, {}) }),
       /* @__PURE__ */ jsx(
         Route,
         {
@@ -7417,290 +8278,6 @@ function App({ initialPlaces = [], initialUser = null, initialBookings = [], ini
     /* @__PURE__ */ jsx(k, { autoClose: 2e3, transition: w })
   ] }) }) });
 }
-var TAG_NAMES = /* @__PURE__ */ ((TAG_NAMES2) => {
-  TAG_NAMES2["BASE"] = "base";
-  TAG_NAMES2["BODY"] = "body";
-  TAG_NAMES2["HEAD"] = "head";
-  TAG_NAMES2["HTML"] = "html";
-  TAG_NAMES2["LINK"] = "link";
-  TAG_NAMES2["META"] = "meta";
-  TAG_NAMES2["NOSCRIPT"] = "noscript";
-  TAG_NAMES2["SCRIPT"] = "script";
-  TAG_NAMES2["STYLE"] = "style";
-  TAG_NAMES2["TITLE"] = "title";
-  TAG_NAMES2["FRAGMENT"] = "Symbol(react.fragment)";
-  return TAG_NAMES2;
-})(TAG_NAMES || {});
-var SEO_PRIORITY_TAGS = {
-  link: { rel: ["amphtml", "canonical", "alternate"] },
-  script: { type: ["application/ld+json"] },
-  meta: {
-    charset: "",
-    name: ["generator", "robots", "description"],
-    property: [
-      "og:type",
-      "og:title",
-      "og:url",
-      "og:image",
-      "og:image:alt",
-      "og:description",
-      "twitter:url",
-      "twitter:title",
-      "twitter:description",
-      "twitter:image",
-      "twitter:image:alt",
-      "twitter:card",
-      "twitter:site"
-    ]
-  }
-};
-Object.values(TAG_NAMES);
-var REACT_TAG_MAP = {
-  accesskey: "accessKey",
-  charset: "charSet",
-  class: "className",
-  contenteditable: "contentEditable",
-  contextmenu: "contextMenu",
-  "http-equiv": "httpEquiv",
-  itemprop: "itemProp",
-  tabindex: "tabIndex"
-};
-Object.entries(REACT_TAG_MAP).reduce(
-  (carry, [key, value]) => {
-    carry[value] = key;
-    return carry;
-  },
-  {}
-);
-var HELMET_ATTRIBUTE = "data-rh";
-var flattenArray = (possibleArray) => Array.isArray(possibleArray) ? possibleArray.join("") : possibleArray;
-var checkIfPropsMatch = (props, toMatch) => {
-  const keys = Object.keys(props);
-  for (let i = 0; i < keys.length; i += 1) {
-    if (toMatch[keys[i]] && toMatch[keys[i]].includes(props[keys[i]])) {
-      return true;
-    }
-  }
-  return false;
-};
-var prioritizer = (elementsList, propsToMatch) => {
-  if (Array.isArray(elementsList)) {
-    return elementsList.reduce(
-      (acc, elementAttrs) => {
-        if (checkIfPropsMatch(elementAttrs, propsToMatch)) {
-          acc.priority.push(elementAttrs);
-        } else {
-          acc.default.push(elementAttrs);
-        }
-        return acc;
-      },
-      { priority: [], default: [] }
-    );
-  }
-  return { default: elementsList, priority: [] };
-};
-var SELF_CLOSING_TAGS = [
-  "noscript",
-  "script",
-  "style"
-  /* STYLE */
-];
-var encodeSpecialCharacters = (str, encode2 = true) => {
-  if (encode2 === false) {
-    return String(str);
-  }
-  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
-};
-var generateElementAttributesAsString = (attributes) => Object.keys(attributes).reduce((str, key) => {
-  const attr = typeof attributes[key] !== "undefined" ? `${key}="${attributes[key]}"` : `${key}`;
-  return str ? `${str} ${attr}` : attr;
-}, "");
-var generateTitleAsString = (type, title, attributes, encode2) => {
-  const attributeString = generateElementAttributesAsString(attributes);
-  const flattenedTitle = flattenArray(title);
-  return attributeString ? `<${type} ${HELMET_ATTRIBUTE}="true" ${attributeString}>${encodeSpecialCharacters(
-    flattenedTitle,
-    encode2
-  )}</${type}>` : `<${type} ${HELMET_ATTRIBUTE}="true">${encodeSpecialCharacters(
-    flattenedTitle,
-    encode2
-  )}</${type}>`;
-};
-var generateTagsAsString = (type, tags, encode2 = true) => tags.reduce((str, t2) => {
-  const tag = t2;
-  const attributeHtml = Object.keys(tag).filter(
-    (attribute) => !(attribute === "innerHTML" || attribute === "cssText")
-  ).reduce((string, attribute) => {
-    const attr = typeof tag[attribute] === "undefined" ? attribute : `${attribute}="${encodeSpecialCharacters(tag[attribute], encode2)}"`;
-    return string ? `${string} ${attr}` : attr;
-  }, "");
-  const tagContent = tag.innerHTML || tag.cssText || "";
-  const isSelfClosing = SELF_CLOSING_TAGS.indexOf(type) === -1;
-  return `${str}<${type} ${HELMET_ATTRIBUTE}="true" ${attributeHtml}${isSelfClosing ? `/>` : `>${tagContent}</${type}>`}`;
-}, "");
-var convertElementAttributesToReactProps = (attributes, initProps = {}) => Object.keys(attributes).reduce((obj, key) => {
-  const mapped = REACT_TAG_MAP[key];
-  obj[mapped || key] = attributes[key];
-  return obj;
-}, initProps);
-var generateTitleAsReactComponent = (_type, title, attributes) => {
-  const initProps = {
-    key: title,
-    [HELMET_ATTRIBUTE]: true
-  };
-  const props = convertElementAttributesToReactProps(attributes, initProps);
-  return [t__default.createElement("title", props, title)];
-};
-var generateTagsAsReactComponent = (type, tags) => tags.map((tag, i) => {
-  const mappedTag = {
-    key: i,
-    [HELMET_ATTRIBUTE]: true
-  };
-  Object.keys(tag).forEach((attribute) => {
-    const mapped = REACT_TAG_MAP[attribute];
-    const mappedAttribute = mapped || attribute;
-    if (mappedAttribute === "innerHTML" || mappedAttribute === "cssText") {
-      const content = tag.innerHTML || tag.cssText;
-      mappedTag.dangerouslySetInnerHTML = { __html: content };
-    } else {
-      mappedTag[mappedAttribute] = tag[attribute];
-    }
-  });
-  return t__default.createElement(type, mappedTag);
-});
-var getMethodsForTag = (type, tags, encode2 = true) => {
-  switch (type) {
-    case "title":
-      return {
-        toComponent: () => generateTitleAsReactComponent(type, tags.title, tags.titleAttributes),
-        toString: () => generateTitleAsString(type, tags.title, tags.titleAttributes, encode2)
-      };
-    case "bodyAttributes":
-    case "htmlAttributes":
-      return {
-        toComponent: () => convertElementAttributesToReactProps(tags),
-        toString: () => generateElementAttributesAsString(tags)
-      };
-    default:
-      return {
-        toComponent: () => generateTagsAsReactComponent(type, tags),
-        toString: () => generateTagsAsString(type, tags, encode2)
-      };
-  }
-};
-var getPriorityMethods = ({ metaTags, linkTags, scriptTags, encode: encode2 }) => {
-  const meta = prioritizer(metaTags, SEO_PRIORITY_TAGS.meta);
-  const link = prioritizer(linkTags, SEO_PRIORITY_TAGS.link);
-  const script = prioritizer(scriptTags, SEO_PRIORITY_TAGS.script);
-  const priorityMethods = {
-    toComponent: () => [
-      ...generateTagsAsReactComponent("meta", meta.priority),
-      ...generateTagsAsReactComponent("link", link.priority),
-      ...generateTagsAsReactComponent("script", script.priority)
-    ],
-    toString: () => (
-      // generate all the tags as strings and concatenate them
-      `${getMethodsForTag("meta", meta.priority, encode2)} ${getMethodsForTag(
-        "link",
-        link.priority,
-        encode2
-      )} ${getMethodsForTag("script", script.priority, encode2)}`
-    )
-  };
-  return {
-    priorityMethods,
-    metaTags: meta.default,
-    linkTags: link.default,
-    scriptTags: script.default
-  };
-};
-var mapStateOnServer = (props) => {
-  const {
-    baseTag,
-    bodyAttributes,
-    encode: encode2 = true,
-    htmlAttributes,
-    noscriptTags,
-    styleTags,
-    title = "",
-    titleAttributes,
-    prioritizeSeoTags
-  } = props;
-  let { linkTags, metaTags, scriptTags } = props;
-  let priorityMethods = {
-    toComponent: () => {
-    },
-    toString: () => ""
-  };
-  if (prioritizeSeoTags) {
-    ({ priorityMethods, linkTags, metaTags, scriptTags } = getPriorityMethods(props));
-  }
-  return {
-    priority: priorityMethods,
-    base: getMethodsForTag("base", baseTag, encode2),
-    bodyAttributes: getMethodsForTag("bodyAttributes", bodyAttributes, encode2),
-    htmlAttributes: getMethodsForTag("htmlAttributes", htmlAttributes, encode2),
-    link: getMethodsForTag("link", linkTags, encode2),
-    meta: getMethodsForTag("meta", metaTags, encode2),
-    noscript: getMethodsForTag("noscript", noscriptTags, encode2),
-    script: getMethodsForTag("script", scriptTags, encode2),
-    style: getMethodsForTag("style", styleTags, encode2),
-    title: getMethodsForTag("title", { title, titleAttributes }, encode2)
-  };
-};
-var server_default = mapStateOnServer;
-var instances = [];
-var isDocument = !!(typeof window !== "undefined" && window.document && window.document.createElement);
-var HelmetData = class {
-  constructor(context, canUseDOM) {
-    __publicField(this, "instances", []);
-    __publicField(this, "canUseDOM", isDocument);
-    __publicField(this, "context");
-    __publicField(this, "value", {
-      setHelmet: (serverState) => {
-        this.context.helmet = serverState;
-      },
-      helmetInstances: {
-        get: () => this.canUseDOM ? instances : this.instances,
-        add: (instance) => {
-          (this.canUseDOM ? instances : this.instances).push(instance);
-        },
-        remove: (instance) => {
-          const index = (this.canUseDOM ? instances : this.instances).indexOf(instance);
-          (this.canUseDOM ? instances : this.instances).splice(index, 1);
-        }
-      }
-    });
-    this.context = context;
-    this.canUseDOM = canUseDOM || false;
-    if (!canUseDOM) {
-      context.helmet = server_default({
-        baseTag: [],
-        bodyAttributes: {},
-        htmlAttributes: {},
-        linkTags: [],
-        metaTags: [],
-        noscriptTags: [],
-        scriptTags: [],
-        styleTags: [],
-        title: "",
-        titleAttributes: {}
-      });
-    }
-  }
-};
-var defaultValue = {};
-var Context = t__default.createContext(defaultValue);
-var HelmetProvider = (_a = class extends Component {
-  constructor(props) {
-    super(props);
-    __publicField(this, "helmetData");
-    this.helmetData = new HelmetData(this.props.context || {}, _a.canUseDOM);
-  }
-  render() {
-    return /* @__PURE__ */ t__default.createElement(Context.Provider, { value: this.helmetData.value }, this.props.children);
-  }
-}, __publicField(_a, "canUseDOM", isDocument), _a);
 async function render(url2, initialData = {}, res) {
   var _a2;
   const helmetContext = {};
@@ -7740,4 +8317,4 @@ async function render(url2, initialData = {}, res) {
 export {
   render
 };
-//# sourceMappingURL=entry-server-Bv7Wjr1C.js.map
+//# sourceMappingURL=entry-server-CJyuMeUl.js.map
