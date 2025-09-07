@@ -35,7 +35,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL || 'https://atypikhouse.onrender.com','http://localhost:5173'],
+    origin: [process.env.VITE_BASE_URL || 'https://atypikhouse.onrender.com','http://localhost:5173'],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
   })
@@ -242,7 +242,7 @@ app.get("*", async (req, res, next) => {
 });
  
 console.log("🔍 ENV CHECK:", {
-  CLIENT_URL: !!process.env.CLIENT_URL,
+  VITE_BASE_URL: !!process.env.VITE_BASE_URL,
   CLOUDINARY_NAME: !!process.env.CLOUDINARY_NAME,
   SESSION_SECRET: !!process.env.SESSION_SECRET
 });
