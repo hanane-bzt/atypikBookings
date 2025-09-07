@@ -58,6 +58,7 @@ export const Header = () => {
 
         <Link
           to={user ? '/account' : '/login'}
+          data-testid="login-link"
           className="w-50 flex h-full items-center gap-2 rounded-full border-gray-300 px-2 py-1 md:border"
         >
           <svg

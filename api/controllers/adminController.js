@@ -86,19 +86,21 @@ const basePerks = [
 exports.getAllPerks = async (req, res) => {
   try {
     const places = await Place.find();
-    const allPerks = new Set(basePerks.map((perk) => JSON.stringify(perk)));
+    const allPerks = new Map(basePerks.map(p => [p.name, p]));
 
     // Ajout des perks utilisées dans les places
-    places.forEach((place) => {
-      place.perks.forEach((perk) => {
-        const icon = basePerks.find((p) => p.name === perk)?.icon || '';
-        allPerks.add(JSON.stringify({ name: perk, icon }));
+    places.forEach(place => {
+      place.perks.forEach(perk => {
+        if (!allPerks.has(perk)) {
+          const icon = basePerks.find(p => p.name === perk)?.icon || '';
+          allPerks.set(perk, { name: perk, icon });
+        }
       });
     });
 
     res.status(200).json({
       success: true,
-      data: Array.from(allPerks).map((perk) => JSON.parse(perk)),
+      data: Array.from(allPerks.values()),
     });
   } catch (error) {
     res

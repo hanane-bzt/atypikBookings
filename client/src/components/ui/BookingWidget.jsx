@@ -96,9 +96,10 @@ const BookingWidget = ({ place }) => {
           <DatePickerWithRange setDateRange={setDateRange} />
         </div>
         <div className="border-t px-4 py-3">
-          <label>Number of guests: </label>
+          <label htmlFor="noOfGuests">Number of guests: </label>
           <input
             type="number"
+            id="noOfGuests"
             name="noOfGuests"
             placeholder={`Max. guests: ${place.maxGuests}`}
             min={1}
@@ -108,16 +109,18 @@ const BookingWidget = ({ place }) => {
           />
         </div>
         <div className="border-t px-4 py-3">
-          <label>Your full name: </label>
+          <label htmlFor="name">Your full name: </label>
           <input
             type="text"
+            id="name"
             name="name"
             value={name}
             onChange={handleBookingData}
           />
-          <label>Phone number: </label>
+          <label htmlFor="phone">Phone number: </label>
           <input
             type="tel"
+            id="phone"
             name="phone"
             value={phone}
             onChange={handleBookingData}
