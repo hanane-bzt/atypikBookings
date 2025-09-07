@@ -167,10 +167,10 @@ exports.updateUserDetails = async (req, res) => {
 // Get all user
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find(); // Récupérer tous les utilisateurs de la base de données
-    res.status(200).json(users); // Répondre avec la liste des utilisateurs
+    const users = await User.find();
+    res.status(200).json(users); // <-- Retourne un tableau directement ✅
   } catch (error) {
-    res.status(500).json({ message: 'Erreur du serveur', error });
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
 

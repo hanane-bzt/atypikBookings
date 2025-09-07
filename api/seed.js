@@ -4,7 +4,7 @@ const { faker } = require('@faker-js/faker');
 const User = require('./models/User');
 const Place = require('./models/Place');
 
-mongoose.connect('mongodb+srv://hananallalou:xVF17p925aPATBio@cluster0.ctc5r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect('mongodb+srv://hananallalou:qBxIXhd2Dy2kHNh5@cluster0.ctc5r.mongodb.net/atypikhouse?retryWrites=true&w=majority&appName=Cluster0', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(async () => {
