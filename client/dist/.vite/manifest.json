@@ -1,18 +1,14 @@
 {
-  "index.html": {
-    "file": "assets/client-CTmYhJX1.js",
-    "name": "client",
-    "src": "index.html",
+  "src/entry-server.jsx": {
+    "file": "assets/entry-server-CYobIuM8.js",
+    "name": "entry-server",
+    "src": "src/entry-server.jsx",
     "isEntry": true,
     "css": [
-      "assets/client-BP9pRzgl.css"
+      "assets/entry-server-B4zyQOk2.css"
     ],
     "assets": [
       "assets/Logo_AtypikHouse-DIBUtg9f.png"
     ]
-  },
-  "src/assets/images/Logo_AtypikHouse.png": {
-    "file": "assets/Logo_AtypikHouse-DIBUtg9f.png",
-    "src": "src/assets/images/Logo_AtypikHouse.png"
   }
 }
