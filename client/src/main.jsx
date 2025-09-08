@@ -5,6 +5,7 @@ import App from './App';
 import './styles/index.css';
 import { HelmetProvider } from 'react-helmet-async';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import { PlaceProvider } from './providers/PlaceProvider';
 
 const initialData = window.__INITIAL_DATA__ || {};
 
@@ -13,7 +14,9 @@ hydrateRoot(
   <React.StrictMode>
     <HelmetProvider>
       <BrowserRouter>
-        <App initialData={initialData} />
+        <PlaceProvider prefetched={initialData.places || []}>
+            <App />
+        </PlaceProvider>
       </BrowserRouter>
     </HelmetProvider>
   </React.StrictMode>
