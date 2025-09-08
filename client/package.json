@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:ssr": "vite build --ssr src/entry-server.jsx",
-    "build:all": "npm run build && npm run build:ssr",
+    "build:ssr": "vite build --ssr src/entry-server.jsx --outDir dist-ssr",
     "build:client": "vite build",
+    "build:all": "npm run build && npm run build:ssr",
     "preview": "vite preview",
     "test": "vitest",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
