@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "cd client && npm install && npm run build:all",
+    "build:ssr": "cd client && npm run build:ssr",
     "start": "node api/server.js"
   },
   "engines": {
