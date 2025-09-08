@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
-cd client
+cd api
+npm install 
+
+cd ../client
 npm install
 npm run build:ssr
