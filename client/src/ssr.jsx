@@ -21,7 +21,7 @@ export async function render(url) {
 
   try {
     if (url === '/') {
-      const API_URL = process.env.API_BASE_URL || 'http://localhost:4000';
+      const API_URL = process.env.API_BASE_URL || 'http://localhost:4000' || 'https://atypikhouse-nd5q.onrender.com/';
       const res = await axios.get(`${API_URL}/api/places?page=1&limit=12`);
       const data = res.data;
       initialData.initialPlaces = data.places || [];
