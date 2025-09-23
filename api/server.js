@@ -66,8 +66,8 @@ app.use('/', sitemapRoutes);
  
 const clientDistPath = path.join(__dirname, '../client/dist');
 app.use('/assets', express.static(path.join(clientDistPath, 'assets')));
-app.use('/googleea2effcdefc4ebba.html',
-  express.static(path.join(clientDistPath, 'googleea2effcdefc4ebba.html')));
+app.use('/googleaa2effcdefc4ebba.html',
+  express.static(path.join(clientDistPath, 'googleaa2effcdefc4ebba.html')));
 app.use('/manifest.json', express.static(path.join(clientDistPath, 'manifest.json')));
 app.use('/favicon.ico', express.static(path.join(clientDistPath, 'favicon.ico')));
 app.use('/robots.txt', express.static(path.join(clientDistPath, 'robots.txt')));
