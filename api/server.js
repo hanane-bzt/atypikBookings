@@ -35,7 +35,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: [process.env.VITE_BASE_URL || 'https://atypikhouse.onrender.com','http://localhost:5173'],
+    origin: [process.env.VITE_BASE_URL || 'https://atypikhouse.onrender.com','http://localhost:5173', 'https://atypikhouse-nd5q.onrender.com'],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
   })
