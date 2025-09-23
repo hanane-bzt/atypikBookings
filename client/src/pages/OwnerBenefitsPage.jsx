@@ -22,7 +22,7 @@ const OwnerBenefitsPage = () => {
         <link rel="canonical" href="https://atypikbookings.com/OwnerBenefits" />
       </Helmet>
 
-      <header className="text-center">
+      <header className="text-center mt-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">
           🎉 Devenez propriétaire sur AtypikBookings
         </h1>
