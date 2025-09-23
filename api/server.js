@@ -61,13 +61,15 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/places", require("./routes/place"));
 app.use("/api/bookings", require("./routes/booking"));
 app.use("/", require("./routes"));
+const sitemapRoutes = require('./routes/sitemap');
+app.use('/', sitemapRoutes);
  
 const clientDistPath = path.join(__dirname, '../client/dist');
 app.use('/assets', express.static(path.join(clientDistPath, 'assets')));
 app.use('/manifest.json', express.static(path.join(clientDistPath, 'manifest.json')));
 app.use('/favicon.ico', express.static(path.join(clientDistPath, 'favicon.ico')));
 app.use('/robots.txt', express.static(path.join(clientDistPath, 'robots.txt')));
-app.use('/sitemap.xml', express.static(path.join(clientDistPath, 'sitemap.xml')));
+
 app.use('/service-worker.js', express.static(path.join(clientDistPath, 'service-worker.js')));
  
 // Route de test pour /api

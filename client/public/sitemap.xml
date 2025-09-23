@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost:5173/</loc>
+    <loc>https://atypikhouse-nd5q.onrender.com/</loc>
   </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/login</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/register</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/account</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/account/places</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/account/places/new</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/account/bookings</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/OwnerBenefitsPage</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/legal</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/admin/dashboard</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/admin/users</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/admin/equipments</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/admin/properties</loc>
+  </url>
+  <url>
+    <loc>https://atypikhouse-nd5q.onrender.com/admin/comments</loc>
+  </url>
+  <!--
+    Pour les routes dynamiques comme /place/:id, /account/places/:id, /account/bookings/:id,
+    vous devrez générer ces URLs de manière programmatique.
+    Cela implique généralement de récupérer les IDs depuis votre base de données
+    et de créer une entrée <url> pour chaque ID.
+
+    Exemple pour une page de lieu (PlacePage):
+    <url>
+      <loc>https://atypikhouse-nd5q.onrender.com/place/ID_DU_LIEU_1</loc>
+    </url>
+    <url>
+      <loc>https://atypikhouse-nd5q.onrender.com/place/ID_DU_LIEU_2</loc>
+    </url>
+    ...
+  -->
 </urlset>
