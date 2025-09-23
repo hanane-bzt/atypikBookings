@@ -9,7 +9,7 @@ const IndexPage = () => {
 
   if (loading) return <Spinner />;
 
-  const visiblePlaces = places.slice(0, 6); // Afficher 6 max
+  const visiblePlaces = places; // Afficher 6 max
 
   return (
     <>
@@ -62,16 +62,7 @@ const IndexPage = () => {
               <p className="text-gray-600">Aucun hébergement trouvé.</p>
             )}
           </div>
-          {places.length > 6 && (
-            <div className="mt-8">
-              <Link
-                to="/places"
-                className="inline-block bg-red-500 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-red-600 transition"
-              >
-                Voir plus
-              </Link>
-            </div>
-          )}
+          
         </div>
       </section>
 
