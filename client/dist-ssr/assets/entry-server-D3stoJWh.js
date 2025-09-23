@@ -3481,7 +3481,7 @@ const {
   mergeConfig
 } = axios;
 const axiosInstance = axios.create({
-  baseURL: "https://atypikhouse-api.onrender.com",
+  baseURL: "http://localhost:4000",
   withCredentials: true
 });
 const initialState$1 = {
@@ -7112,7 +7112,7 @@ const PerksWidget = ({ perks }) => {
   ] });
 };
 const isBrowser = typeof window !== "undefined";
-const API_BASE_URL = "https://atypikhouse-api.onrender.com";
+const API_BASE_URL = "http://localhost:4000";
 function PlacePage() {
   var _a2;
   const { id } = useParams();
@@ -7664,7 +7664,7 @@ const AdminUsers = () => {
   const [editingUserId, setEditingUserId] = useState(null);
   const [editedName, setEditedName] = useState("");
   const [editedEmail, setEditedEmail] = useState("");
-  const API_BASE_URL2 = "https://atypikhouse-api.onrender.com";
+  const API_BASE_URL2 = "http://localhost:4000";
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get(`${API_BASE_URL2}/api/admin/users`, {
@@ -7868,7 +7868,7 @@ const basePerks = [
 const AdminPerks = () => {
   const [perks, setPerks] = useState([]);
   const [newPerk, setNewPerk] = useState("");
-  const API_BASE_URL2 = "https://atypikhouse-api.onrender.com";
+  const API_BASE_URL2 = "http://localhost:4000";
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get(`${API_BASE_URL2}/api/admin/perks`, {
@@ -7956,7 +7956,7 @@ const AdminProperties = () => {
   const [places, setPlaces] = useState([]);
   const [editingPlaceId, setEditingPlaceId] = useState(null);
   const [editedPlace, setEditedPlace] = useState({});
-  const API_BASE_URL2 = "https://atypikhouse-api.onrender.com";
+  const API_BASE_URL2 = "http://localhost:4000";
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get(`${API_BASE_URL2}/api/admin/places`, {
@@ -8121,7 +8121,7 @@ const AdminProperties = () => {
 const AdminComments = () => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const API_BASE_URL2 = "https://atypikhouse-api.onrender.com";
+  const API_BASE_URL2 = "http://localhost:4000";
   useEffect(() => {
     const fetchComments = async () => {
       setLoading(true);
@@ -8309,4 +8309,4 @@ async function render(url2, initialData = {}, res) {
 export {
   render
 };
-//# sourceMappingURL=entry-server-BdAPdo4O.js.map
+//# sourceMappingURL=entry-server-D3stoJWh.js.map
