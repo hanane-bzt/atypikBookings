@@ -3481,7 +3481,7 @@ const {
   mergeConfig
 } = axios;
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL:  process.env.API_BASE_URL || "http://localhost:4000",
   withCredentials: true
 });
 const initialState$1 = {
