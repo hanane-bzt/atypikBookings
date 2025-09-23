@@ -25,7 +25,6 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { Avatar as Avatar$1, AvatarImage as AvatarImage$1 } from "@radix-ui/react-avatar";
 import { motion } from "framer-motion";
 import { Helmet as Helmet$1 } from "react-helmet";
-import { Link as Link$1, Element } from "react-scroll";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import fastCompare from "react-fast-compare";
 import invariant from "invariant";
@@ -3997,18 +3996,15 @@ const IndexPage = () => {
       ] }),
       /* @__PURE__ */ jsx("p", { className: "text-base text-gray-500 mt-3", children: "Cette page présente nos services ainsi qu’une vue d’ensemble des biens disponibles à la location." }),
       /* @__PURE__ */ jsx("div", { className: "mt-6", children: /* @__PURE__ */ jsx(
-        Link$1,
+        "a",
         {
-          to: "places",
-          smooth: true,
-          duration: 800,
-          offset: -60,
+          href: "#places",
           className: "inline-block cursor-pointer rounded-full bg-red-500 px-6 py-3 text-white font-semibold shadow hover:bg-red-600 transition duration-300",
           children: "Explorer les hébergements"
         }
       ) })
     ] }) }),
-    /* @__PURE__ */ jsx(Element, { name: "places", className: "py-20 px-6 bg-white", children: /* @__PURE__ */ jsxs("div", { className: "max-w-6xl mx-auto text-center", children: [
+    /* @__PURE__ */ jsx("section", { id: "places", className: "py-20 px-6 bg-white", children: /* @__PURE__ */ jsxs("div", { className: "max-w-6xl mx-auto text-center", children: [
       /* @__PURE__ */ jsx("h2", { className: "text-3xl font-bold text-gray-800 mb-10", children: "Nos hébergements atypiques" }),
       /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3", children: visiblePlaces.length > 0 ? visiblePlaces.map((place) => /* @__PURE__ */ jsx(PlaceCard, { place }, place._id)) : /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Aucun hébergement trouvé." }) }),
       places.length > 6 && /* @__PURE__ */ jsx("div", { className: "mt-8", children: /* @__PURE__ */ jsx(
@@ -5767,6 +5763,36 @@ const LoginPage = () => {
         /* @__PURE__ */ jsx(Link, { className: "text-black underline", to: "/register", children: "Inscrivez-vous maintenant" })
       ] })
     ] }) })
+  ] });
+};
+const AllPlacesPage = () => {
+  const [places, setPlaces] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchPlaces = async () => {
+      try {
+        const { data } = await axiosInstance.get("/api/places");
+        setPlaces(data.places);
+        setLoading(false);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des lieux :", error);
+        setLoading(false);
+      }
+    };
+    fetchPlaces();
+  }, []);
+  if (loading) {
+    return /* @__PURE__ */ jsx(Spinner, {});
+  }
+  return /* @__PURE__ */ jsxs(Fragment, { children: [
+    /* @__PURE__ */ jsxs(Helmet$1, { children: [
+      /* @__PURE__ */ jsx("title", { children: "Nos hébergements - AtypikHouse" }),
+      /* @__PURE__ */ jsx("meta", { name: "description", content: "Découvrez tous nos hébergements atypiques disponibles à la location." })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { className: "max-w-6xl mx-auto text-center", children: [
+      /* @__PURE__ */ jsx("h2", { className: "text-3xl font-bold text-gray-800 my-10", children: "Tous nos hébergements atypiques" }),
+      /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3", children: places.length > 0 ? places.map((place) => /* @__PURE__ */ jsx(PlaceCard, { place }, place._id)) : /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Aucun hébergement trouvé." }) })
+    ] })
   ] });
 };
 const BookingDates = ({ booking, className }) => {
@@ -8257,6 +8283,7 @@ function App({ initialPlaces = [], initialUser = null, initialBookings = [], ini
       /* @__PURE__ */ jsx(Route, { index: true, element: /* @__PURE__ */ jsx(IndexPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/login", element: /* @__PURE__ */ jsx(LoginPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/register", element: /* @__PURE__ */ jsx(RegisterPage, {}) }),
+      /* @__PURE__ */ jsx(Route, { path: "/places", element: /* @__PURE__ */ jsx(AllPlacesPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/account", element: /* @__PURE__ */ jsx(ProfilePage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/account/places", element: /* @__PURE__ */ jsx(PlacesPage, {}) }),
       /* @__PURE__ */ jsx(Route, { path: "/account/places/new", element: /* @__PURE__ */ jsx(PlacesFormPage, {}) }),
@@ -8321,4 +8348,4 @@ async function render(url2, initialData = {}, res) {
 export {
   render
 };
-//# sourceMappingURL=entry-server-CYobIuM8.js.map
+//# sourceMappingURL=entry-server-D1HqMuaA.js.map

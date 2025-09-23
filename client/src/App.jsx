@@ -11,6 +11,7 @@ import OwnerBenefitsPage from './pages/OwnerBenefitsPage';
 import LoginPage from './pages/LoginPage';
 import ProfilePage from './pages/ProfilePage';
 import PlacesPage from './pages/PlacesPage';
+import AllPlacesPage from './pages/AllPlacesPage';
 import BookingsPage from './pages/BookingsPage';
 import PlacesFormPage from './pages/PlacesFormPage';
 import PlacePage from './pages/PlacePage';
@@ -51,6 +52,7 @@ function App({ initialPlaces = [], initialUser = null, initialBookings = [], ini
               <Route index element={<IndexPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/places" element={<AllPlacesPage />} />
               <Route path="/account" element={<ProfilePage />} />
               <Route path="/account/places" element={<PlacesPage />} />
               <Route path="/account/places/new" element={<PlacesFormPage />} />

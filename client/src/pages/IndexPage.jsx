@@ -2,7 +2,6 @@ import { usePlaces } from '../../hooks';
 import Spinner from '@/components/ui/Spinner';
 import PlaceCard from '@/components/ui/PlaceCard';
 import { Helmet } from 'react-helmet';
-import { Link as ScrollLink, Element } from 'react-scroll';
 import { Link } from 'react-router-dom';
 
 const IndexPage = () => {
@@ -40,21 +39,18 @@ const IndexPage = () => {
             Cette page présente nos services ainsi qu’une vue d’ensemble des biens disponibles à la location.
           </p>
           <div className="mt-6">
-            <ScrollLink
-              to="places"
-              smooth={true}
-              duration={800}
-              offset={-60}
+            <a
+              href="#places"
               className="inline-block cursor-pointer rounded-full bg-red-500 px-6 py-3 text-white font-semibold shadow hover:bg-red-600 transition duration-300"
             >
               Explorer les hébergements
-            </ScrollLink>
+            </a>
           </div>
         </div>
       </section>
 
       {/* SECTION PLACES */}
-      <Element name="places" className="py-20 px-6 bg-white">
+      <section id="places" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-10">
             Nos hébergements atypiques
@@ -77,7 +73,7 @@ const IndexPage = () => {
             </div>
           )}
         </div>
-      </Element>
+      </section>
 
       {/* SECTION DEVENEZ HOTE */}
       <section  className="py-20 px-6 bg-gradient-to-b from-red-50 to-white">
@@ -103,3 +99,4 @@ const IndexPage = () => {
 };
 
 export default IndexPage;
+
