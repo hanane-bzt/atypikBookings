@@ -3481,7 +3481,7 @@ const {
   mergeConfig
 } = axios;
 const axiosInstance = axios.create({
-  baseURL: "https://atypikhouse-nd5q.onrender.com/",
+  baseURL: "http://localhost:4000",
   withCredentials: true
 });
 const initialState$1 = {
@@ -3970,8 +3970,9 @@ const PlaceCard = ({ place }) => {
 };
 const IndexPage = () => {
   const { places = [], loading = false } = usePlaces() || {};
+  const [displayCount, setDisplayCount] = useState(6);
   if (loading) return /* @__PURE__ */ jsx(Spinner, {});
-  const visiblePlaces = places;
+  const visiblePlaces = places.slice(0, displayCount);
   return /* @__PURE__ */ jsxs(Fragment, { children: [
     /* @__PURE__ */ jsxs(Helmet$1, { children: [
       /* @__PURE__ */ jsx("title", { children: "AtypikHouse - Découvrez des habitats uniques" }),
@@ -4006,7 +4007,15 @@ const IndexPage = () => {
     ] }) }),
     /* @__PURE__ */ jsx("section", { id: "places", className: "py-20 px-6 bg-white", children: /* @__PURE__ */ jsxs("div", { className: "max-w-6xl mx-auto text-center", children: [
       /* @__PURE__ */ jsx("h2", { className: "text-3xl font-bold text-gray-800 mb-10", children: "Nos hébergements atypiques" }),
-      /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3", children: visiblePlaces.length > 0 ? visiblePlaces.map((place) => /* @__PURE__ */ jsx(PlaceCard, { place }, place._id)) : /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Aucun hébergement trouvé." }) })
+      /* @__PURE__ */ jsx("div", { className: "grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3", children: visiblePlaces.length > 0 ? visiblePlaces.map((place) => /* @__PURE__ */ jsx(PlaceCard, { place }, place._id)) : /* @__PURE__ */ jsx("p", { className: "text-gray-600", children: "Aucun hébergement trouvé." }) }),
+      places.length > displayCount && /* @__PURE__ */ jsx("div", { className: "text-center mt-8", children: /* @__PURE__ */ jsx(
+        "button",
+        {
+          onClick: () => setDisplayCount((prevCount) => prevCount + 6),
+          className: "inline-block cursor-pointer rounded-full bg-primary px-6 py-3 text-white font-semibold shadow hover:bg-red-600 transition duration-300",
+          children: "Voir plus"
+        }
+      ) })
     ] }) }),
     /* @__PURE__ */ jsx("section", { className: "py-20 px-6 bg-gradient-to-b from-red-50 to-white", children: /* @__PURE__ */ jsxs("div", { className: "max-w-4xl mx-auto text-center", children: [
       /* @__PURE__ */ jsx("h2", { className: "text-3xl font-bold text-gray-800 mb-4", children: "Louez votre hébergement atypique" }),
@@ -4969,7 +4978,7 @@ const OwnerBenefitsPage = () => {
       /* @__PURE__ */ jsx("meta", { name: "robots", content: "index, follow" }),
       /* @__PURE__ */ jsx("link", { rel: "canonical", href: "https://atypikbookings.com/OwnerBenefits" })
     ] }),
-    /* @__PURE__ */ jsxs("header", { className: "text-center", children: [
+    /* @__PURE__ */ jsxs("header", { className: "text-center mt-16", children: [
       /* @__PURE__ */ jsx("h1", { className: "text-4xl font-bold text-gray-800 mb-4", children: "🎉 Devenez propriétaire sur AtypikBookings" }),
       /* @__PURE__ */ jsx("p", { className: "text-lg text-gray-600 max-w-2xl", children: "Rentabilisez votre hébergement atypique en le louant sur AtypikBookings. Cabanes, yourtes, igloos, maisons flottantes... Notre plateforme vous permet de trouver des locataires en toute simplicité et sécurité." })
     ] }),
@@ -7112,7 +7121,7 @@ const PerksWidget = ({ perks }) => {
   ] });
 };
 const isBrowser = typeof window !== "undefined";
-const API_BASE_URL = "https://atypikhouse-nd5q.onrender.com/";
+const API_BASE_URL = "http://localhost:4000";
 function PlacePage() {
   var _a2;
   const { id } = useParams();
@@ -7664,7 +7673,7 @@ const AdminUsers = () => {
   const [editingUserId, setEditingUserId] = useState(null);
   const [editedName, setEditedName] = useState("");
   const [editedEmail, setEditedEmail] = useState("");
-  const API_BASE_URL2 = "https://atypikhouse-nd5q.onrender.com/";
+  const API_BASE_URL2 = "http://localhost:4000";
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get(`${API_BASE_URL2}/api/admin/users`, {
@@ -7868,7 +7877,7 @@ const basePerks = [
 const AdminPerks = () => {
   const [perks, setPerks] = useState([]);
   const [newPerk, setNewPerk] = useState("");
-  const API_BASE_URL2 = "https://atypikhouse-nd5q.onrender.com/";
+  const API_BASE_URL2 = "http://localhost:4000";
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get(`${API_BASE_URL2}/api/admin/perks`, {
@@ -7956,7 +7965,7 @@ const AdminProperties = () => {
   const [places, setPlaces] = useState([]);
   const [editingPlaceId, setEditingPlaceId] = useState(null);
   const [editedPlace, setEditedPlace] = useState({});
-  const API_BASE_URL2 = "https://atypikhouse-nd5q.onrender.com/";
+  const API_BASE_URL2 = "http://localhost:4000";
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get(`${API_BASE_URL2}/api/admin/places`, {
@@ -8121,7 +8130,7 @@ const AdminProperties = () => {
 const AdminComments = () => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const API_BASE_URL2 = "https://atypikhouse-nd5q.onrender.com/";
+  const API_BASE_URL2 = "http://localhost:4000";
   useEffect(() => {
     const fetchComments = async () => {
       setLoading(true);
@@ -8309,4 +8318,4 @@ async function render(url2, initialData = {}, res) {
 export {
   render
 };
-//# sourceMappingURL=entry-server-CVRaD6t1.js.map
+//# sourceMappingURL=entry-server-C5qkgvRo.js.map

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { usePlaces } from '../../hooks';
 import Spinner from '@/components/ui/Spinner';
 import PlaceCard from '@/components/ui/PlaceCard';
@@ -6,10 +7,11 @@ import { Link } from 'react-router-dom';
 
 const IndexPage = () => {
   const { places = [], loading = false } = usePlaces() || {};
+  const [displayCount, setDisplayCount] = useState(6);
 
   if (loading) return <Spinner />;
 
-  const visiblePlaces = places; // Afficher 6 max
+  const visiblePlaces = places.slice(0, displayCount);
 
   return (
     <>
@@ -62,7 +64,16 @@ const IndexPage = () => {
               <p className="text-gray-600">Aucun hébergement trouvé.</p>
             )}
           </div>
-          
+          {places.length > displayCount && (
+            <div className="text-center mt-8">
+              <button
+                onClick={() => setDisplayCount(prevCount => prevCount + 6)}
+                className="inline-block cursor-pointer rounded-full bg-primary px-6 py-3 text-white font-semibold shadow hover:bg-red-600 transition duration-300"
+              >
+                Voir plus
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
